@@ -51,12 +51,12 @@
     ];
 
     const PULSO_PEERS = [
-      { id: 'A42', mask: 'FINTECH·AR·A·68',  size: 68 },
-      { id: 'B19', mask: 'FINTECH·BR·A·54',  size: 54 },
-      { id: 'C73', mask: 'FINTECH·MX·A·71',  size: 71 },
-      { id: 'D28', mask: 'FINTECH·AR·A·49',  size: 49 },
-      { id: 'E91', mask: 'FINTECH·CL·A·62',  size: 62 },
-      { id: 'F14', mask: 'FINTECH·CO·A·58',  size: 58 }
+      { id: 'A42', mask: 'FINTECH·AR·SerieA·Buenos Aires',     size: 68 },
+      { id: 'B19', mask: 'FINTECH·BR·SerieA·São Paulo',        size: 54 },
+      { id: 'C73', mask: 'FINTECH·MX·SerieA·Ciudad de México', size: 71 },
+      { id: 'D28', mask: 'FINTECH·AR·SerieA·Córdoba',          size: 49 },
+      { id: 'E91', mask: 'FINTECH·CL·SerieA·Santiago',         size: 62 },
+      { id: 'F14', mask: 'FINTECH·CO·SerieA·Bogotá',           size: 58 }
     ];
 
     const PULSO_ORG_BENCH = [
@@ -334,9 +334,9 @@
             </select>
 
             {userRole === 'startup' && (<>
-              <div style={{ width: 22, height: 22, borderRadius: 5, background: S.ink, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>M</div>
-              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Mirador Labs</span>
-              <span style={{ fontSize: 11, padding: '2px 7px', background: S.accentSoft, color: S.accent, borderRadius: 4, fontWeight: 500 }}>Series A</span>
+              <div style={{ width: 22, height: 22, borderRadius: 5, background: S.ink, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>U</div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Ualá</span>
+              <span style={{ fontSize: 11, padding: '2px 7px', background: S.accentSoft, color: S.accent, borderRadius: 4, fontWeight: 500 }}>Series D · Fintech AR</span>
             </>)}
 
             {userRole === 'accelerator' && (<>
@@ -446,12 +446,12 @@
               })}
             </section>
             <section style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>
-              <div style={{ padding: '14px 16px', borderBottom: `1px solid ${S.line}`, fontSize: 14, fontWeight: 600, color: S.ink }}>Market this week</div>
+              <div style={{ padding: '14px 16px', borderBottom: `1px solid ${S.line}`, fontSize: 14, fontWeight: 600, color: S.ink }}>LATAM market this week</div>
               {[
-                { t: 'Senior FE bands moved +4.2%',         s: 'Fintech · AR · 30d'    },
-                { t: 'Two peers added a Head of Data',       s: 'Series A · LATAM'      },
-                { t: 'CFO P75 up 7%',                        s: 'Cross-sector'          },
-                { t: 'Eng:PM ratio tightened to 9.6:1',     s: 'Series A cohort'       },
+                { t: 'Argentina: Senior FE bands +8% (currency adjust.)',  s: 'Fintech · AR · 30d'     },
+                { t: 'Brazil: 2 Series B fintechs added Head of Data',     s: 'São Paulo cohort'       },
+                { t: 'Mexico: CFO equity packages moved to 0.5–1.2%',      s: 'Series A cross-sector'  },
+                { t: 'Regional: Eng:PM ratio tightening to 8.2:1',         s: 'Fintech LATAM'          },
               ].map((x, i, a) => (
                 <div key={i} style={{ padding: '12px 16px', borderBottom: i < a.length - 1 ? `1px solid ${S.lineSoft}` : 'none' }}>
                   <div style={{ fontSize: 13, color: S.ink, lineHeight: 1.4 }}>{x.t}</div>
@@ -524,6 +524,11 @@
               <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>Country</span>
               {PULSO_COUNTRIES.map(c => <Chip key={c.code} active={filters.country === c.code} onClick={() => setFilters({...filters, country: c.code})}>{c.flag} {c.code}</Chip>)}
             </div>
+          </div>
+
+          <div style={{ fontSize: 11, color: S.inkMuted, marginBottom: 8, marginTop: -6 }}>
+            {({ AR: '1 USD = 1,050 ARS', BR: '1 USD = 5.2 BRL', MX: '1 USD = 18.5 MXN', CO: '1 USD = 4,100 COP', CL: '1 USD = 950 CLP', UY: '1 USD = 40 UYU' })[filters.country]}
+            {' · rates updated daily · salaries shown in USD'}
           </div>
 
           <div style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>
@@ -843,12 +848,12 @@
           <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:16 }}>Company profile</div>
           <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
             {[
-              {k:'Name',v:'Mirador Labs'},
+              {k:'Name',v:'Ualá'},
               {k:'Industry',v:'Fintech'},
-              {k:'Stage',v:'Series A · Nov 2025 · USD 14M'},
+              {k:'Stage',v:'Series D · 2024 · USD 300M'},
               {k:'HQ',v:'Buenos Aires, Argentina'},
               {k:'Headcount',v:'62 · 7 open reqs'},
-              {k:'Cohort',v:'Fintech · Series A · LATAM · 40–120 FTE'},
+              {k:'Cohort',v:'Fintech · Series D · LATAM · 40–120 FTE'},
             ].map((x,i,a)=>(
               <div key={i} style={{ display:'grid', gridTemplateColumns:'160px 1fr auto', gap:12, padding:'14px 16px', borderBottom:i<a.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
                 <div style={{ fontSize:11, color:S.inkMuted, fontWeight:600, textTransform:'uppercase', letterSpacing:0.4 }}>{x.k}</div>

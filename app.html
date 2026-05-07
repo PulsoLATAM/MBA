@@ -36,18 +36,44 @@
     ];
 
     const PULSO_ROLES = [
-      { id: 'eng-jr',    role: 'Software Engineer',   fn: 'Engineering', level: 'Junior',    p25: 3200,  p50: 3800,  p75: 4500,  n: 142 },
-      { id: 'eng-mid',   role: 'Software Engineer',   fn: 'Engineering', level: 'Mid',       p25: 4800,  p50: 5600,  p75: 6800,  n: 238 },
-      { id: 'eng-sr',    role: 'Software Engineer',   fn: 'Engineering', level: 'Senior',    p25: 5400,  p50: 6100,  p75: 7200,  n: 156 },
-      { id: 'eng-staff', role: 'Staff Engineer',      fn: 'Engineering', level: 'Staff',     p25: 7800,  p50: 9200,  p75: 11000, n: 48  },
-      { id: 'pm-mid',    role: 'Product Manager',     fn: 'Product',     level: 'Mid',       p25: 5200,  p50: 6000,  p75: 7100,  n: 94  },
-      { id: 'pm-sr',     role: 'Product Manager',     fn: 'Product',     level: 'Senior',    p25: 6800,  p50: 7900,  p75: 9400,  n: 67  },
-      { id: 'des-sr',    role: 'Product Designer',    fn: 'Design',      level: 'Senior',    p25: 5100,  p50: 5900,  p75: 7000,  n: 72  },
-      { id: 'data-sr',   role: 'Data Scientist',      fn: 'Data',        level: 'Senior',    p25: 6200,  p50: 7100,  p75: 8300,  n: 54  },
-      { id: 'mkt-mid',   role: 'Marketing Manager',   fn: 'Marketing',   level: 'Mid',       p25: 4400,  p50: 5200,  p75: 6200,  n: 88  },
-      { id: 'sales-sr',  role: 'Sales Lead',          fn: 'Sales',       level: 'Senior',    p25: 5800,  p50: 6700,  p75: 8100,  n: 76  },
-      { id: 'eng-lead',  role: 'Engineering Manager', fn: 'Engineering', level: 'Manager',   p25: 8200,  p50: 9800,  p75: 11600, n: 42  },
-      { id: 'cto',       role: 'CTO',                 fn: 'Engineering', level: 'Executive', p25: 12000, p50: 15000, p75: 18500, n: 28  }
+      // Engineering
+      { id: 'eng-jr',       role: 'Software Engineer',   fn: 'Engineering', level: 'Junior',    p25: 3200,  p50: 3800,  p75: 4500,  n: 142 },
+      { id: 'eng-mid',      role: 'Software Engineer',   fn: 'Engineering', level: 'Mid',       p25: 4800,  p50: 5600,  p75: 6800,  n: 238 },
+      { id: 'eng-sr',       role: 'Software Engineer',   fn: 'Engineering', level: 'Senior',    p25: 5400,  p50: 6100,  p75: 7200,  n: 156 },
+      { id: 'fe-mid',       role: 'Frontend Engineer',   fn: 'Engineering', level: 'Mid',       p25: 4600,  p50: 5400,  p75: 6500,  n: 178 },
+      { id: 'fe-sr',        role: 'Frontend Engineer',   fn: 'Engineering', level: 'Senior',    p25: 5200,  p50: 6000,  p75: 7100,  n: 134 },
+      { id: 'mobile-sr',    role: 'Mobile Engineer',     fn: 'Engineering', level: 'Senior',    p25: 5600,  p50: 6500,  p75: 7800,  n: 89  },
+      { id: 'devops-sr',    role: 'DevOps Engineer',     fn: 'Engineering', level: 'Senior',    p25: 6000,  p50: 7200,  p75: 8600,  n: 76  },
+      { id: 'qa-mid',       role: 'QA Engineer',         fn: 'Engineering', level: 'Mid',       p25: 3200,  p50: 3800,  p75: 4600,  n: 112 },
+      { id: 'sec-sr',       role: 'Security Engineer',   fn: 'Engineering', level: 'Senior',    p25: 6800,  p50: 8100,  p75: 9800,  n: 41  },
+      { id: 'eng-staff',    role: 'Staff Engineer',      fn: 'Engineering', level: 'Staff',     p25: 7800,  p50: 9200,  p75: 11000, n: 48  },
+      { id: 'eng-lead',     role: 'Engineering Manager', fn: 'Engineering', level: 'Manager',   p25: 8200,  p50: 9800,  p75: 11600, n: 42  },
+      { id: 'cto',          role: 'CTO',                 fn: 'Engineering', level: 'Executive', p25: 12000, p50: 15000, p75: 18500, n: 28  },
+      // Product
+      { id: 'pm-jr',        role: 'Product Manager',     fn: 'Product',     level: 'Junior',    p25: 3800,  p50: 4500,  p75: 5400,  n: 63  },
+      { id: 'pm-mid',       role: 'Product Manager',     fn: 'Product',     level: 'Mid',       p25: 5200,  p50: 6000,  p75: 7100,  n: 94  },
+      { id: 'pm-sr',        role: 'Product Manager',     fn: 'Product',     level: 'Senior',    p25: 6800,  p50: 7900,  p75: 9400,  n: 67  },
+      { id: 'pm-head',      role: 'Head of Product',     fn: 'Product',     level: 'Head',      p25: 9200,  p50: 11000, p75: 13500, n: 34  },
+      // Design
+      { id: 'des-mid',      role: 'Product Designer',    fn: 'Design',      level: 'Mid',       p25: 3900,  p50: 4700,  p75: 5700,  n: 98  },
+      { id: 'des-sr',       role: 'Product Designer',    fn: 'Design',      level: 'Senior',    p25: 5100,  p50: 5900,  p75: 7000,  n: 72  },
+      { id: 'ux-mid',       role: 'UX Researcher',       fn: 'Design',      level: 'Mid',       p25: 3600,  p50: 4300,  p75: 5200,  n: 57  },
+      // Data
+      { id: 'data-mid',     role: 'Data Analyst',        fn: 'Data',        level: 'Mid',       p25: 3800,  p50: 4600,  p75: 5600,  n: 119 },
+      { id: 'data-sr',      role: 'Data Scientist',      fn: 'Data',        level: 'Senior',    p25: 6200,  p50: 7100,  p75: 8300,  n: 54  },
+      { id: 'data-eng-sr',  role: 'Data Engineer',       fn: 'Data',        level: 'Senior',    p25: 6400,  p50: 7500,  p75: 9000,  n: 67  },
+      { id: 'data-head',    role: 'Head of Data',        fn: 'Data',        level: 'Head',      p25: 9500,  p50: 11500, p75: 14000, n: 29  },
+      // Marketing
+      { id: 'mkt-mid',      role: 'Marketing Manager',   fn: 'Marketing',   level: 'Mid',       p25: 4400,  p50: 5200,  p75: 6200,  n: 88  },
+      { id: 'growth-sr',    role: 'Growth Manager',      fn: 'Marketing',   level: 'Senior',    p25: 5800,  p50: 6900,  p75: 8200,  n: 72  },
+      { id: 'mkt-head',     role: 'Head of Marketing',   fn: 'Marketing',   level: 'Head',      p25: 8500,  p50: 10200, p75: 12500, n: 38  },
+      // Sales
+      { id: 'ae-mid',       role: 'Account Executive',   fn: 'Sales',       level: 'Mid',       p25: 4800,  p50: 5700,  p75: 7200,  n: 94  },
+      { id: 'sales-sr',     role: 'Sales Lead',          fn: 'Sales',       level: 'Senior',    p25: 5800,  p50: 6700,  p75: 8100,  n: 76  },
+      { id: 'sales-head',   role: 'Head of Sales',       fn: 'Sales',       level: 'Head',      p25: 10000, p50: 12500, p75: 16000, n: 31  },
+      // People & Finance
+      { id: 'people-mid',   role: 'People Manager',      fn: 'People',      level: 'Mid',       p25: 3600,  p50: 4400,  p75: 5500,  n: 82  },
+      { id: 'cfo',          role: 'CFO',                 fn: 'Finance',     level: 'Executive', p25: 14000, p50: 18000, p75: 23000, n: 22  },
     ];
 
     const PULSO_PEERS = [
@@ -544,7 +570,7 @@
             <div style={{ width: 1, background: S.line }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>Level</span>
-              {['All','Junior','Mid','Senior','Staff','Manager','Executive'].map(l => <Chip key={l} active={filters.level === l} onClick={() => setFilters({...filters, level: l})}>{l}</Chip>)}
+              {['All','Junior','Mid','Senior','Staff','Manager','Head','Executive'].map(l => <Chip key={l} active={filters.level === l} onClick={() => setFilters({...filters, level: l})}>{l}</Chip>)}
             </div>
             <div style={{ width: 1, background: S.line }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>

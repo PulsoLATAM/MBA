@@ -146,8 +146,12 @@
       return (
         <aside style={{ width: 220, borderRight: `1px solid ${S.line}`, padding: '18px 12px', background: S.surface, display: 'flex', flexDirection: 'column', gap: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 8px 18px' }}>
-            <div style={{ width: 22, height: 22, borderRadius: 6, background: S.accent, display: 'grid', placeItems: 'center', color: '#fff', fontSize: 12, fontWeight: 700 }}>P</div>
-            <span style={{ fontSize: 14, fontWeight: 600, color: S.ink, letterSpacing: -0.2 }}>Pulso</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ fontSize: 16, fontWeight: 700, color: S.ink, letterSpacing: -0.6, lineHeight: 1 }}>pulso</span>
+              <svg width="22" height="15" viewBox="0 0 24 17" fill="none" aria-hidden="true">
+                <path d="M1 9h3.5L7 2l4 13 3.5-11L17 9h6" stroke="#0ABFCF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <span style={{ marginLeft: 'auto', fontSize: 10, fontFamily: S.mono, color: S.inkFaint, padding: '2px 6px', background: S.chipBg, borderRadius: 4 }}>v0.9</span>
           </div>
           {items.map(it => (

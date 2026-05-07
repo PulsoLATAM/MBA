@@ -465,10 +465,11 @@
       );
     }
 
-    function Row({ r, cm, onOpen, pm }) {
+    function Row({ r, cm, onOpen, pm, fx, currSymbol }) {
       const [hover, setHover] = useState(false);
-      const p25 = Math.round(r.p25 * cm * pm), p50 = Math.round(r.p50 * cm * pm), p75 = Math.round(r.p75 * cm * pm);
-      const GMAX = 18000 * pm;
+      const p25 = Math.round(r.p25 * cm * pm * fx), p50 = Math.round(r.p50 * cm * pm * fx), p75 = Math.round(r.p75 * cm * pm * fx);
+      const GMAX = Math.round(18000 * pm * fx);
+      const fmt = v => currSymbol === 'USD' ? `$${v.toLocaleString()}` : `${v.toLocaleString()} ${currSymbol}`;
       return (
         <div onClick={onOpen} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{
           display: 'grid', gridTemplateColumns: '1.6fr 1fr 0.8fr 0.9fr 0.9fr 0.9fr 1.8fr 0.6fr', gap: 0,
@@ -478,9 +479,9 @@
           <div style={{ color: S.ink, fontWeight: 500 }}>{r.role}</div>
           <div style={{ color: S.inkSoft }}>{r.fn}</div>
           <div style={{ color: S.inkSoft }}>{r.level}</div>
-          <div style={{ fontFamily: S.mono, fontSize: 12, color: S.inkMuted, textAlign: 'right' }}>${p25.toLocaleString()}</div>
-          <div style={{ fontFamily: S.mono, fontSize: 12, color: S.ink, textAlign: 'right', fontWeight: 600 }}>${p50.toLocaleString()}</div>
-          <div style={{ fontFamily: S.mono, fontSize: 12, color: S.inkMuted, textAlign: 'right' }}>${p75.toLocaleString()}</div>
+          <div style={{ fontFamily: S.mono, fontSize: 12, color: S.inkMuted, textAlign: 'right' }}>{fmt(p25)}</div>
+          <div style={{ fontFamily: S.mono, fontSize: 12, color: S.ink, textAlign: 'right', fontWeight: 600 }}>{fmt(p50)}</div>
+          <div style={{ fontFamily: S.mono, fontSize: 12, color: S.inkMuted, textAlign: 'right' }}>{fmt(p75)}</div>
           <div style={{ position: 'relative', height: 18, marginLeft: 12, marginRight: 4 }}>
             <div style={{ position: 'absolute', top: 8, left: 0, right: 0, height: 2, background: S.lineSoft, borderRadius: 1 }} />
             <div style={{ position: 'absolute', top: 5, left: `${(p25/GMAX)*100}%`, width: `${((p75-p25)/GMAX)*100}%`, height: 8, background: S.accentDim, borderRadius: 4 }} />
@@ -519,6 +520,9 @@
         ? `1 USD = ${Math.round(fxRate).toLocaleString()} ${fxCode}`
         : fxRates ? 'Rate unavailable' : 'Loading rate…';
       const fxTime = fxUpdated ? `Updated ${fxUpdated}` : 'rates updated daily';
+      const [currency, setCurrency] = useState('USD');
+      const fxMult = currency === 'local' ? (fxRate || 1) : 1;
+      const currSymbol = currency === 'local' ? fxCode : 'USD';
 
       return (
         <div style={{ padding: '24px 28px 60px' }}>
@@ -545,19 +549,35 @@
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 12px', background: S.accentSoft, borderRadius: 6, marginBottom: 12, fontSize: 12, fontWeight: 500 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 12px', background: S.accentSoft, borderRadius: 6, marginBottom: 12, fontSize: 12, fontWeight: 500 }}>
             <span style={{ fontSize: 14 }}>💱</span>
             <span style={{ color: S.accent }}>{fxLabel}</span>
-            <span style={{ color: S.inkMuted, fontWeight: 400 }}>· {fxTime} · salaries in USD</span>
+            <span style={{ color: S.inkMuted, fontWeight: 400 }}>· {fxTime}</span>
+            <div style={{ marginLeft: 'auto', display: 'flex', background: '#fff', borderRadius: 5, padding: 2, gap: 1 }}>
+              {[{ key: 'USD', label: 'USD' }, { key: 'local', label: fxCode }].map(opt => (
+                <button key={opt.key}
+                  onClick={() => (opt.key === 'USD' || fxRate) && setCurrency(opt.key)}
+                  style={{
+                    padding: '3px 10px', borderRadius: 4, border: 'none', fontFamily: S.font,
+                    cursor: opt.key === 'local' && !fxRate ? 'not-allowed' : 'pointer',
+                    fontSize: 11, fontWeight: 600,
+                    background: currency === opt.key ? S.accent : 'transparent',
+                    color: currency === opt.key ? '#fff' : S.inkMuted,
+                    opacity: opt.key === 'local' && !fxRate ? 0.4 : 1,
+                    transition: 'all 0.15s',
+                  }}
+                >{opt.label}</button>
+              ))}
+            </div>
           </div>
 
           <div style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 0.8fr 0.9fr 0.9fr 0.9fr 1.8fr 0.6fr', padding: '10px 16px', background: S.bg, fontSize: 11, fontWeight: 600, color: S.inkMuted, textTransform: 'uppercase', letterSpacing: 0.4, borderBottom: `1px solid ${S.line}` }}>
               <div>Role</div><div>Function</div><div>Level</div>
-              <div style={{textAlign:'right'}}>P25</div><div style={{textAlign:'right'}}>P50</div><div style={{textAlign:'right'}}>P75</div>
+              <div style={{textAlign:'right'}}>P25 ({currSymbol})</div><div style={{textAlign:'right'}}>P50 ({currSymbol})</div><div style={{textAlign:'right'}}>P75 ({currSymbol})</div>
               <div>Band</div><div style={{textAlign:'right'}}>n</div>
             </div>
-            {rows.map(r => <Row key={r.id} r={r} cm={cm} pm={pm} onOpen={() => { setSelectedRoleId(r.id); setNav('role'); }} />)}
+            {rows.map(r => <Row key={r.id} r={r} cm={cm} pm={pm} fx={fxMult} currSymbol={currSymbol} onOpen={() => { setSelectedRoleId(r.id); setNav('role'); }} />)}
           </div>
         </div>
       );

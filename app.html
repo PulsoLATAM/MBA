@@ -339,20 +339,20 @@
             </select>
 
             {userRole === 'startup' && (<>
-              <div style={{ width: 22, height: 22, borderRadius: 5, background: S.ink, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>U</div>
-              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Ualá</span>
+              <div style={{ width: 22, height: 22, borderRadius: 5, background: S.ink, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>N</div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Nuvelo</span>
               <span style={{ fontSize: 11, padding: '2px 7px', background: S.accentSoft, color: S.accent, borderRadius: 4, fontWeight: 500 }}>Series D · Fintech AR</span>
             </>)}
 
             {userRole === 'accelerator' && (<>
-              <div style={{ width: 22, height: 22, borderRadius: 5, background: '#FF6B35', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>E</div>
-              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Endeavor Argentina</span>
+              <div style={{ width: 22, height: 22, borderRadius: 5, background: '#FF6B35', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>F</div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Fortia</span>
               <span style={{ fontSize: 11, padding: '2px 7px', background: '#FFF4EC', color: '#C2410C', borderRadius: 4, fontWeight: 500 }}>28 portfolio cos.</span>
             </>)}
 
             {userRole === 'vc' && (<>
-              <div style={{ width: 22, height: 22, borderRadius: 5, background: '#7C3AED', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>K</div>
-              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Kaszek Ventures</span>
+              <div style={{ width: 22, height: 22, borderRadius: 5, background: '#7C3AED', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>O</div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Orion Capital</span>
               <span style={{ fontSize: 11, padding: '2px 7px', background: '#F5F3FF', color: '#7C3AED', borderRadius: 4, fontWeight: 500 }}>Due diligence mode</span>
             </>)}
           </div>
@@ -378,8 +378,8 @@
         : `$${medMonthly.toLocaleString()}`;
       const medLabel = period === 'annual' ? 'Median eng. salary / yr' : 'Median eng. salary / mo';
 
-      const greeting = userRole === 'accelerator' ? 'Good morning, Endeavor'
-        : userRole === 'vc' ? 'Good morning, Kaszek'
+      const greeting = userRole === 'accelerator' ? 'Good morning, Fortia'
+        : userRole === 'vc' ? 'Good morning, Orion'
         : 'Good morning, Carolina';
 
       const context = userRole === 'accelerator'
@@ -892,7 +892,7 @@
           <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:16 }}>Company profile</div>
           <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
             {[
-              {k:'Name',v:'Ualá'},
+              {k:'Name',v:'Nuvelo'},
               {k:'Industry',v:'Fintech'},
               {k:'Stage',v:'Series D · 2024 · USD 300M'},
               {k:'HQ',v:'Buenos Aires, Argentina'},

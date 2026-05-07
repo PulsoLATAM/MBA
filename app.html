@@ -492,6 +492,17 @@
     }
 
     function Comp({ setNav, setSelectedRoleId, filters, setFilters, period }) {
+      const [fxRates, setFxRates] = useState(null);
+      const [fxUpdated, setFxUpdated] = useState(null);
+      useEffect(() => {
+        fetch('https://open.er-api.com/v6/latest/USD')
+          .then(r => r.json())
+          .then(d => {
+            setFxRates(d.rates);
+            setFxUpdated(d.time_last_update_utc ? d.time_last_update_utc.slice(5, 16) : null);
+          })
+          .catch(() => {});
+      }, []);
       const fns = ['All', ...Array.from(new Set(PULSO_ROLES.map(r => r.fn)))];
       const rows = useMemo(() => PULSO_ROLES.filter(r => {
         if (filters.fn !== 'All' && r.fn !== filters.fn) return false;
@@ -501,6 +512,13 @@
       const cm = { AR:1, BR:1.06, MX:1.03, CO:0.9, CL:0.98, UY:0.95 }[filters.country] || 1;
       const pm = period === 'annual' ? 12 : 1;
       const periodLabel = period === 'annual' ? 'USD/yr' : 'USD/mo';
+      const CURR = { AR: 'ARS', BR: 'BRL', MX: 'MXN', CO: 'COP', CL: 'CLP', UY: 'UYU' };
+      const fxCode = CURR[filters.country];
+      const fxRate = fxRates?.[fxCode];
+      const fxLabel = fxRate
+        ? `1 USD = ${Math.round(fxRate).toLocaleString()} ${fxCode}`
+        : fxRates ? 'Rate unavailable' : 'Loading rate…';
+      const fxTime = fxUpdated ? `Updated ${fxUpdated}` : 'rates updated daily';
 
       return (
         <div style={{ padding: '24px 28px 60px' }}>
@@ -527,12 +545,10 @@
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 12px', background: S.accentSoft, borderRadius: 6, marginBottom: 12, fontSize: 12, color: S.accent, fontWeight: 500 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 12px', background: S.accentSoft, borderRadius: 6, marginBottom: 12, fontSize: 12, fontWeight: 500 }}>
             <span style={{ fontSize: 14 }}>💱</span>
-            <span>
-              {({ AR: '1 USD = 1,050 ARS', BR: '1 USD = 5.2 BRL', MX: '1 USD = 18.5 MXN', CO: '1 USD = 4,100 COP', CL: '1 USD = 950 CLP', UY: '1 USD = 40 UYU' })[filters.country]}
-              {' · rates updated daily · salaries displayed in USD'}
-            </span>
+            <span style={{ color: S.accent }}>{fxLabel}</span>
+            <span style={{ color: S.inkMuted, fontWeight: 400 }}>· {fxTime} · salaries in USD</span>
           </div>
 
           <div style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>

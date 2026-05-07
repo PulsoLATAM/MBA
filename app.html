@@ -627,6 +627,10 @@
       }, [scatter, min, max]);
       const hmax = Math.max(...hist);
       const mine = 5400;
+      const minePct = Math.round((mine - r.p50) / r.p50 * 100);
+      const mineAbove = minePct >= 0;
+      const mineDelta = `${Math.abs(minePct)}% ${mineAbove ? 'above' : 'below'} P50`;
+      const mineTone = mineAbove ? 'good' : 'bad';
 
       return (
         <div style={{ padding: '24px 28px 60px' }}>
@@ -643,7 +647,7 @@
               { label:`P25 ${periodSuffix}`,          value:`$${Math.round(r.p25*pm).toLocaleString()}` },
               { label:`Median (P50) ${periodSuffix}`, value:`$${Math.round(r.p50*pm).toLocaleString()}` },
               { label:`P75 ${periodSuffix}`,          value:`$${Math.round(r.p75*pm).toLocaleString()}` },
-              { label:'Your offer',                   value:`$${Math.round(mine*pm).toLocaleString()}`, delta:'12% below P50', tone:'bad' },
+              { label:'Your offer',                   value:`$${Math.round(mine*pm).toLocaleString()}`, delta: mineDelta, tone: mineTone },
             ].map((s,i) => (
               <div key={i} style={{ padding:16, background:S.surface, border:`1px solid ${i===3?S.bad:S.line}`, borderRadius:8 }}>
                 <Stat {...s} />

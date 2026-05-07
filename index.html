@@ -111,31 +111,6 @@
 
     .nav-icon:hover { border-color: var(--teal); }
 
-    /* "startups LATAM" sticker inline */
-    .brand-sticker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: white;
-      border-radius: 14px;
-      padding: 6px 18px;
-      box-shadow: 3px 5px 20px rgba(12,27,51,0.16), 0 1px 0 rgba(0,0,0,0.05);
-      transform: rotate(-1.5deg);
-      vertical-align: middle;
-      margin: 0 4px;
-    }
-
-    .sticker-word {
-      font-size: clamp(2.6rem, 6.5vw, 5.2rem);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -2.5px;
-      background: linear-gradient(90deg, #F97316, #EC4899, #8B5CF6, #06B6D4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
@@ -1228,16 +1203,22 @@
     <!-- Text left -->
     <div class="hero-text">
       <h1 class="hero-h1">
-        El único benchmark<br/>que une compensaciones<br/>y estructura organizacional.
+        Acompañamos el crecimiento<br/>de tu equipo.
       </h1>
       <div class="hero-somos">
-        <span class="hero-somos-text">Diseñado para</span>
-        <span class="brand-sticker">
-          <span class="sticker-word">startups LATAM</span>
+        <span class="hero-somos-text">Somos</span>
+        <span class="brand-inline">
+          <span class="brand-inline-word">pulso</span>
+          <span class="brand-inline-wave">
+            <svg width="44" height="32" viewBox="0 0 44 32" fill="none" aria-hidden="true">
+              <path d="M2 17h6L11 4l6 24 6-19 5 9 8 0" stroke="white" stroke-width="3.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
         </span>
         <span class="hero-somos-dot">.</span>
       </div>
-      <p class="hero-sub">PulsoComp + PulsoOrg: los datos que necesitás para contratar bien, pagar justo, y crecer con la estructura correcta.</p>
+      <p class="hero-sub">Tu partner de estructura para crecer.</p>
       <div class="hero-actions">
         <a href="app.html" class="btn-hero-demo">
           Explorar plataforma

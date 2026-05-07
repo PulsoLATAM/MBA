@@ -527,9 +527,12 @@
             </div>
           </div>
 
-          <div style={{ fontSize: 11, color: S.inkMuted, marginBottom: 8, marginTop: -6 }}>
-            {({ AR: '1 USD = 1,050 ARS', BR: '1 USD = 5.2 BRL', MX: '1 USD = 18.5 MXN', CO: '1 USD = 4,100 COP', CL: '1 USD = 950 CLP', UY: '1 USD = 40 UYU' })[filters.country]}
-            {' · rates updated daily · salaries shown in USD'}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 12px', background: S.accentSoft, borderRadius: 6, marginBottom: 12, fontSize: 12, color: S.accent, fontWeight: 500 }}>
+            <span style={{ fontSize: 14 }}>💱</span>
+            <span>
+              {({ AR: '1 USD = 1,050 ARS', BR: '1 USD = 5.2 BRL', MX: '1 USD = 18.5 MXN', CO: '1 USD = 4,100 COP', CL: '1 USD = 950 CLP', UY: '1 USD = 40 UYU' })[filters.country]}
+              {' · rates updated daily · salaries displayed in USD'}
+            </span>
           </div>
 
           <div style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>

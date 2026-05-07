@@ -315,13 +315,41 @@
       );
     }
 
-    function Topbar({ onSearch, period, setPeriod }) {
+    function Topbar({ onSearch, period, setPeriod, userRole, setUserRole }) {
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 24px', borderBottom: `1px solid ${S.line}`, background: S.surface }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 22, height: 22, borderRadius: 5, background: S.ink, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>M</div>
-            <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Mirador Labs</span>
-            <span style={{ fontSize: 11, padding: '2px 7px', background: S.accentSoft, color: S.accent, borderRadius: 4, fontWeight: 500 }}>Series A</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <select
+              value={userRole}
+              onChange={(e) => setUserRole(e.target.value)}
+              style={{
+                padding: '6px 10px', fontSize: 12, fontWeight: 500, fontFamily: S.font,
+                border: `1px solid ${S.line}`, borderRadius: 6,
+                background: S.surface, color: S.ink, cursor: 'pointer',
+              }}
+            >
+              <option value="startup">🚀 Startup view</option>
+              <option value="accelerator">🏢 Accelerator view</option>
+              <option value="vc">💼 Fund view</option>
+            </select>
+
+            {userRole === 'startup' && (<>
+              <div style={{ width: 22, height: 22, borderRadius: 5, background: S.ink, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>M</div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Mirador Labs</span>
+              <span style={{ fontSize: 11, padding: '2px 7px', background: S.accentSoft, color: S.accent, borderRadius: 4, fontWeight: 500 }}>Series A</span>
+            </>)}
+
+            {userRole === 'accelerator' && (<>
+              <div style={{ width: 22, height: 22, borderRadius: 5, background: '#FF6B35', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>E</div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Endeavor Argentina</span>
+              <span style={{ fontSize: 11, padding: '2px 7px', background: '#FFF4EC', color: '#C2410C', borderRadius: 4, fontWeight: 500 }}>28 portfolio cos.</span>
+            </>)}
+
+            {userRole === 'vc' && (<>
+              <div style={{ width: 22, height: 22, borderRadius: 5, background: '#7C3AED', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>K</div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Kaszek Ventures</span>
+              <span style={{ fontSize: 11, padding: '2px 7px', background: '#F5F3FF', color: '#7C3AED', borderRadius: 4, fontWeight: 500 }}>Due diligence mode</span>
+            </>)}
           </div>
           <div style={{ flex: 1 }} />
           <PeriodToggle period={period} setPeriod={setPeriod} />
@@ -338,18 +366,52 @@
       );
     }
 
-    function Home({ setNav, showOrg, period }) {
+    function Home({ setNav, showOrg, period, userRole }) {
       const medMonthly = 6100;
       const medValue = period === 'annual'
         ? `$${(medMonthly * 12).toLocaleString()}`
         : `$${medMonthly.toLocaleString()}`;
       const medLabel = period === 'annual' ? 'Median eng. salary / yr' : 'Median eng. salary / mo';
+
+      const greeting = userRole === 'accelerator' ? 'Good morning, Endeavor'
+        : userRole === 'vc' ? 'Good morning, Kaszek'
+        : 'Good morning, Carolina';
+
+      const context = userRole === 'accelerator'
+        ? 'Fri · Apr 24 · Portfolio: 28 companies · 8 countries · Series A–C'
+        : userRole === 'vc'
+        ? 'Fri · Apr 24 · Due diligence: Fintech · 14 active targets · LATAM'
+        : 'Fri · Apr 24 · Peer set: Fintech · Series A · LATAM · 284 peers';
+
+      const stats = userRole === 'accelerator'
+        ? [
+            { label: 'Portfolio cos. tracked', value: '28/28', delta: 'All active',          tone: 'good'  },
+            { label: 'Avg. comp growth',        value: '+12%',  delta: 'Q1 vs Q4',            tone: 'good'  },
+            { label: 'Below P25 alert',          value: '3 cos.', delta: 'Need salary review', tone: 'bad'   },
+            { label: 'Org health (avg)',         value: '7.8/10', delta: '+0.3 vs last qtr',   tone: 'watch' },
+          ]
+        : userRole === 'vc'
+        ? [
+            { label: 'Portfolio analysis',  value: '14 cos.', delta: '3 Series A ready',       tone: 'good'  },
+            { label: 'Org health score',    value: '8.2/10',  delta: '+0.4 vs cohort',          tone: 'good'  },
+            { label: 'Comp risk flags',     value: '6',        delta: 'Across 4 companies',     tone: 'bad'   },
+            { label: 'DD reports ready',    value: '2/14',     delta: '12 in progress',          tone: 'watch' },
+          ]
+        : [
+            { label: 'Bands at P50+',  value: '7/12',    delta: '+2 since Mar',      tone: 'good'  },
+            { label: medLabel,         value: medValue,  delta: '+4.2% · 30d',       tone: 'good'  },
+            { label: 'Retention risk', value: '2 IC',    delta: 'Both below P25',    tone: 'bad'   },
+            showOrg
+              ? { label: 'Org health', value: '8/9',    delta: 'Data function low', tone: 'watch' }
+              : { label: 'Open reqs',  value: '7',      delta: '3 above P75',       tone: 'watch' },
+          ];
+
       return (
         <div style={{ padding: '24px 28px 60px' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 18 }}>
             <div>
-              <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>Good morning, Carolina</div>
-              <div style={{ fontSize: 13, color: S.inkMuted, marginTop: 4 }}>Fri · Apr 24 · Peer set: Fintech · Series A · LATAM · 284 peers</div>
+              <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>{greeting}</div>
+              <div style={{ fontSize: 13, color: S.inkMuted, marginTop: 4 }}>{context}</div>
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <button style={{ padding: '7px 12px', background: S.surface, color: S.ink, border: `1px solid ${S.line}`, borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>Export PDF</button>
@@ -358,14 +420,7 @@
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 22 }}>
-            {[
-              { label: 'Bands at P50+',  value: '7/12',    delta: '+2 since Mar',      tone: 'good'  },
-              { label: medLabel,         value: medValue,  delta: '+4.2% · 30d',       tone: 'good'  },
-              { label: 'Retention risk', value: '2 IC',    delta: 'Both below P25',    tone: 'bad'   },
-              showOrg
-                ? { label: 'Org health', value: '8/9',    delta: 'Data function low', tone: 'watch' }
-                : { label: 'Open reqs',  value: '7',      delta: '3 above P75',       tone: 'watch' },
-            ].map((s, i) => (
+            {stats.map((s, i) => (
               <div key={i} style={{ padding: 16, background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8 }}>
                 <Stat {...s} />
               </div>
@@ -812,6 +867,7 @@
       const [filters, setFilters] = useState({ fn: 'All', level: 'All', country: 'AR' });
       const [searchOpen, setSearchOpen] = useState(false);
       const [period, setPeriod] = useState('monthly');
+      const [userRole, setUserRole] = useState('startup');
       const showOrg = true;
 
       useEffect(() => {
@@ -827,7 +883,7 @@
       }, []);
 
       let content;
-      if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} />;
+      if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} userRole={userRole} />;
       else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} period={period} />;
       else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} period={period} />;
       else if (nav === 'bands')                 content = <Bands period={period} />;
@@ -839,7 +895,7 @@
         <div style={{ display:'grid', gridTemplateColumns:'220px 1fr', minHeight:'100vh', background:S.bg, fontFamily:S.font, color:S.ink }}>
           <Sidebar nav={nav} setNav={setNav} showOrg={showOrg} />
           <div style={{ display:'flex', flexDirection:'column', minHeight:'100%' }}>
-            <Topbar onSearch={() => setSearchOpen(true)} period={period} setPeriod={setPeriod} />
+            <Topbar onSearch={() => setSearchOpen(true)} period={period} setPeriod={setPeriod} userRole={userRole} setUserRole={setUserRole} />
             <div style={{ flex:1, overflow:'auto' }}>{content}</div>
           </div>
           <SearchModal

@@ -179,17 +179,19 @@
       );
     }
 
-    function SearchModal({ open, onClose, setNav, setSelectedRoleId }) {
+    function SearchModal({ open, onClose, setNav, setSelectedRoleId, period }) {
       const [q, setQ] = React.useState('');
       const [sel, setSel] = React.useState(-1);
       const inputRef = React.useRef(null);
 
       const results = React.useMemo(() => {
         const lq = q.trim().toLowerCase();
+        const pm = period === 'annual' ? 12 : 1;
+        const periodSuffix = period === 'annual' ? '/yr' : '/mo';
         const roleItems = PULSO_ROLES.map(r => ({
           type: 'role', id: r.id,
           title: `${r.role} — ${r.level}`,
-          meta: `P50 $${r.p50.toLocaleString()}/mo · ${r.fn}`,
+          meta: `P50 $${Math.round(r.p50*pm).toLocaleString()}${periodSuffix} · ${r.fn}`,
           badge: 'PulsoComp',
         }));
         const peerItems = PULSO_PEERS.map(p => ({
@@ -295,7 +297,25 @@
       );
     }
 
-    function Topbar({ onSearch }) {
+    function PeriodToggle({ period, setPeriod }) {
+      return (
+        <div style={{ display: 'flex', background: S.lineSoft, borderRadius: 7, padding: 3, gap: 2 }}>
+          {['monthly', 'annual'].map(p => (
+            <button key={p} onClick={() => setPeriod(p)} style={{
+              padding: '4px 11px', borderRadius: 5, border: 'none', cursor: 'pointer',
+              fontSize: 11, fontWeight: 600, fontFamily: S.font,
+              background: period === p ? S.surface : 'transparent',
+              color: period === p ? S.ink : S.inkMuted,
+              boxShadow: period === p ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+              transition: 'all 0.15s',
+              textTransform: 'capitalize',
+            }}>{p}</button>
+          ))}
+        </div>
+      );
+    }
+
+    function Topbar({ onSearch, period, setPeriod }) {
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 24px', borderBottom: `1px solid ${S.line}`, background: S.surface }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -304,7 +324,8 @@
             <span style={{ fontSize: 11, padding: '2px 7px', background: S.accentSoft, color: S.accent, borderRadius: 4, fontWeight: 500 }}>Series A</span>
           </div>
           <div style={{ flex: 1 }} />
-          <div onClick={onSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', border: `1px solid ${S.line}`, borderRadius: 7, fontSize: 12, color: S.inkMuted, width: 280, cursor: 'pointer', transition: 'border-color 0.15s' }}
+          <PeriodToggle period={period} setPeriod={setPeriod} />
+          <div onClick={onSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', border: `1px solid ${S.line}`, borderRadius: 7, fontSize: 12, color: S.inkMuted, width: 240, cursor: 'pointer', transition: 'border-color 0.15s' }}
             onMouseEnter={e => e.currentTarget.style.borderColor = S.accent}
             onMouseLeave={e => e.currentTarget.style.borderColor = S.line}
           >
@@ -317,7 +338,12 @@
       );
     }
 
-    function Home({ setNav, showOrg }) {
+    function Home({ setNav, showOrg, period }) {
+      const medMonthly = 6100;
+      const medValue = period === 'annual'
+        ? `$${(medMonthly * 12).toLocaleString()}`
+        : `$${medMonthly.toLocaleString()}`;
+      const medLabel = period === 'annual' ? 'Median eng. salary / yr' : 'Median eng. salary / mo';
       return (
         <div style={{ padding: '24px 28px 60px' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 18 }}>
@@ -333,12 +359,12 @@
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 22 }}>
             {[
-              { label: 'Bands at P50+',     value: '7/12',  delta: '+2 since Mar',        tone: 'good'  },
-              { label: 'Median eng. salary', value: '$6,100', delta: '+4.2% · 30d',         tone: 'good'  },
-              { label: 'Retention risk',     value: '2 IC',  delta: 'Both below P25',       tone: 'bad'   },
+              { label: 'Bands at P50+',  value: '7/12',    delta: '+2 since Mar',      tone: 'good'  },
+              { label: medLabel,         value: medValue,  delta: '+4.2% · 30d',       tone: 'good'  },
+              { label: 'Retention risk', value: '2 IC',    delta: 'Both below P25',    tone: 'bad'   },
               showOrg
-                ? { label: 'Org health',    value: '8/9',   delta: 'Data function low',    tone: 'watch' }
-                : { label: 'Open reqs',     value: '7',     delta: '3 above P75',          tone: 'watch' },
+                ? { label: 'Org health', value: '8/9',    delta: 'Data function low', tone: 'watch' }
+                : { label: 'Open reqs',  value: '7',      delta: '3 above P75',       tone: 'watch' },
             ].map((s, i) => (
               <div key={i} style={{ padding: 16, background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8 }}>
                 <Stat {...s} />
@@ -383,10 +409,10 @@
       );
     }
 
-    function Row({ r, cm, onOpen }) {
+    function Row({ r, cm, onOpen, pm }) {
       const [hover, setHover] = useState(false);
-      const p25 = Math.round(r.p25 * cm), p50 = Math.round(r.p50 * cm), p75 = Math.round(r.p75 * cm);
-      const GMAX = 18000;
+      const p25 = Math.round(r.p25 * cm * pm), p50 = Math.round(r.p50 * cm * pm), p75 = Math.round(r.p75 * cm * pm);
+      const GMAX = 18000 * pm;
       return (
         <div onClick={onOpen} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{
           display: 'grid', gridTemplateColumns: '1.6fr 1fr 0.8fr 0.9fr 0.9fr 0.9fr 1.8fr 0.6fr', gap: 0,
@@ -409,7 +435,7 @@
       );
     }
 
-    function Comp({ setNav, setSelectedRoleId, filters, setFilters }) {
+    function Comp({ setNav, setSelectedRoleId, filters, setFilters, period }) {
       const fns = ['All', ...Array.from(new Set(PULSO_ROLES.map(r => r.fn)))];
       const rows = useMemo(() => PULSO_ROLES.filter(r => {
         if (filters.fn !== 'All' && r.fn !== filters.fn) return false;
@@ -417,12 +443,14 @@
         return true;
       }), [filters]);
       const cm = { AR:1, BR:1.06, MX:1.03, CO:0.9, CL:0.98, UY:0.95 }[filters.country] || 1;
+      const pm = period === 'annual' ? 12 : 1;
+      const periodLabel = period === 'annual' ? 'USD/yr' : 'USD/mo';
 
       return (
         <div style={{ padding: '24px 28px 60px' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
             <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>Compensation explorer</div>
-            <div style={{ fontSize: 12, color: S.inkMuted }}>{rows.length} roles · base USD/mo · {PULSO_COUNTRIES.find(c => c.code === filters.country)?.name}</div>
+            <div style={{ fontSize: 12, color: S.inkMuted }}>{rows.length} roles · base {periodLabel} · {PULSO_COUNTRIES.find(c => c.code === filters.country)?.name}</div>
           </div>
           <div style={{ fontSize: 13, color: S.inkMuted, marginBottom: 20 }}>Peer set: Fintech · Series A · 40–120 FTE · last 90 days</div>
 
@@ -449,14 +477,16 @@
               <div style={{textAlign:'right'}}>P25</div><div style={{textAlign:'right'}}>P50</div><div style={{textAlign:'right'}}>P75</div>
               <div>Band</div><div style={{textAlign:'right'}}>n</div>
             </div>
-            {rows.map(r => <Row key={r.id} r={r} cm={cm} onOpen={() => { setSelectedRoleId(r.id); setNav('role'); }} />)}
+            {rows.map(r => <Row key={r.id} r={r} cm={cm} pm={pm} onOpen={() => { setSelectedRoleId(r.id); setNav('role'); }} />)}
           </div>
         </div>
       );
     }
 
-    function RoleDetail({ setNav, selectedRoleId }) {
+    function RoleDetail({ setNav, selectedRoleId, period }) {
       const r = PULSO_ROLES.find(x => x.id === selectedRoleId) || PULSO_ROLES[2];
+      const pm = period === 'annual' ? 12 : 1;
+      const periodSuffix = period === 'annual' ? '/yr' : '/mo';
       const scatter = useMemo(() => pulsoScatter(r.p25, r.p50, r.p75, r.n, r.id.length), [r]);
       const max = Math.max(...scatter, r.p75*1.3), min = Math.min(...scatter, r.p25*0.7);
       const BINS = 18;
@@ -480,10 +510,10 @@
 
           <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:14, marginBottom:22 }}>
             {[
-              { label:'P25',          value:`$${r.p25.toLocaleString()}` },
-              { label:'Median (P50)', value:`$${r.p50.toLocaleString()}` },
-              { label:'P75',          value:`$${r.p75.toLocaleString()}` },
-              { label:'Your offer',   value:`$${mine.toLocaleString()}`, delta:'12% below P50', tone:'bad' },
+              { label:`P25 ${periodSuffix}`,          value:`$${Math.round(r.p25*pm).toLocaleString()}` },
+              { label:`Median (P50) ${periodSuffix}`, value:`$${Math.round(r.p50*pm).toLocaleString()}` },
+              { label:`P75 ${periodSuffix}`,          value:`$${Math.round(r.p75*pm).toLocaleString()}` },
+              { label:'Your offer',                   value:`$${Math.round(mine*pm).toLocaleString()}`, delta:'12% below P50', tone:'bad' },
             ].map((s,i) => (
               <div key={i} style={{ padding:16, background:S.surface, border:`1px solid ${i===3?S.bad:S.line}`, borderRadius:8 }}>
                 <Stat {...s} />
@@ -508,7 +538,7 @@
                   <div key={i} style={{ position:'absolute', top:0, left:`${left}%`, transform:'translateX(-50%)', textAlign:'center' }}>
                     <div style={{ width:1, height:8, background:m.h?S.ink:S.inkFaint, margin:'0 auto' }} />
                     <div style={{ fontSize:10, color:m.h?S.ink:S.inkMuted, fontWeight:m.h?600:500, marginTop:3 }}>{m.l}</div>
-                    <div style={{ fontSize:10, fontFamily:S.mono, color:S.inkMuted }}>${m.v.toLocaleString()}</div>
+                    <div style={{ fontSize:10, fontFamily:S.mono, color:S.inkMuted }}>${Math.round(m.v*pm).toLocaleString()}</div>
                   </div>
                 );
               })}
@@ -518,7 +548,7 @@
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginTop:20 }}>
             <div style={{ padding:18, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
               <div style={{ fontSize:14, fontWeight:600, color:S.ink, marginBottom:12 }}>Package composition</div>
-              {[['Base',78,`$${r.p50.toLocaleString()}`],['Variable',12,'$732'],['Equity',7,'$427'],['Benefits',3,'$183']].map(([l,p,v],i) => (
+              {[['Base',78,`$${Math.round(r.p50*pm).toLocaleString()}`],['Variable',12,`$${Math.round(732*pm).toLocaleString()}`],['Equity',7,`$${Math.round(427*pm).toLocaleString()}`],['Benefits',3,`$${Math.round(183*pm).toLocaleString()}`]].map(([l,p,v],i) => (
                 <div key={i} style={{ display:'grid', gridTemplateColumns:'80px 1fr 50px 70px', gap:12, alignItems:'center', padding:'8px 0', borderBottom:i<3?`1px solid ${S.lineSoft}`:'none' }}>
                   <div style={{ fontSize:12, color:S.ink, fontWeight:500 }}>{l}</div>
                   <div style={{ height:6, background:S.lineSoft, borderRadius:3, overflow:'hidden' }}>
@@ -547,13 +577,15 @@
       );
     }
 
-    function Bands() {
+    function Bands({ period }) {
       const [anchor, setAnchor] = useState(50);
       const [spread, setSpread] = useState(30);
       const [selRole, setSelRole] = useState(PULSO_ROLES[2]);
-      const p25 = Math.round(selRole.p50*(1-spread/200)*(anchor/50));
-      const p50 = Math.round(selRole.p50*(anchor/50));
-      const p75 = Math.round(selRole.p50*(1+spread/200)*(anchor/50));
+      const pm = period === 'annual' ? 12 : 1;
+      const periodSuffix = period === 'annual' ? '/yr' : '/mo';
+      const p25 = Math.round(selRole.p50*(1-spread/200)*(anchor/50)*pm);
+      const p50 = Math.round(selRole.p50*(anchor/50)*pm);
+      const p75 = Math.round(selRole.p50*(1+spread/200)*(anchor/50)*pm);
       return (
         <div style={{ padding:'24px 28px 60px' }}>
           <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:4 }}>Band builder</div>
@@ -564,7 +596,7 @@
               <select value={selRole.id} onChange={e => setSelRole(PULSO_ROLES.find(x=>x.id===e.target.value))} style={{ width:'100%', padding:9, fontSize:13, borderRadius:6, border:`1px solid ${S.line}`, marginBottom:18, background:S.surface, color:S.ink }}>
                 {PULSO_ROLES.map(x => <option key={x.id} value={x.id}>{x.role} · {x.level}</option>)}
               </select>
-              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>Anchor <span style={{color:S.ink,marginLeft:4}}>P{anchor}</span></div>
+              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>Anchor <span style={{color:S.ink,marginLeft:4}}>P{anchor}</span> <span style={{color:S.inkFaint,fontWeight:400}}>({periodSuffix})</span></div>
               <input type="range" min="25" max="75" value={anchor} onChange={e=>setAnchor(+e.target.value)} style={{ width:'100%', accentColor:S.accent, marginBottom:18 }} />
               <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>Spread <span style={{color:S.ink,marginLeft:4}}>±{Math.round(spread/2)}%</span></div>
               <input type="range" min="10" max="60" value={spread} onChange={e=>setSpread(+e.target.value)} style={{ width:'100%', accentColor:S.accent, marginBottom:18 }} />
@@ -578,15 +610,15 @@
             <div style={{ padding:22, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
               <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:4 }}>Preview</div>
               <div style={{ fontSize:28, fontWeight:600, color:S.ink, letterSpacing:-0.5 }}>${p25.toLocaleString()} – ${p75.toLocaleString()}</div>
-              <div style={{ fontSize:12, color:S.inkMuted, marginTop:4 }}>{selRole.role} · {selRole.level}</div>
+              <div style={{ fontSize:12, color:S.inkMuted, marginTop:4 }}>{selRole.role} · {selRole.level} · base {periodSuffix}</div>
               <div style={{ position:'relative', height:50, marginTop:26 }}>
                 <div style={{ position:'absolute', top:22, left:0, right:0, height:3, background:S.lineSoft, borderRadius:2 }} />
                 <div style={{ position:'absolute', top:18, left:`${(selRole.p25/(selRole.p75*1.4))*100}%`, width:`${((selRole.p75-selRole.p25)/(selRole.p75*1.4))*100}%`, height:10, background:S.accentDim, borderRadius:5, opacity:0.7 }} />
                 <div style={{ position:'absolute', top:14, left:`${(p25/(selRole.p75*1.4))*100}%`, width:`${((p75-p25)/(selRole.p75*1.4))*100}%`, height:18, background:S.accent, borderRadius:4 }} />
               </div>
               <div style={{ display:'flex', justifyContent:'space-between', marginTop:8, fontSize:10, fontFamily:S.mono, color:S.inkMuted }}>
-                <span>Market P25 ${selRole.p25.toLocaleString()}</span>
-                <span>Market P75 ${selRole.p75.toLocaleString()}</span>
+                <span>Market P25 ${Math.round(selRole.p25*pm).toLocaleString()}</span>
+                <span>Market P75 ${Math.round(selRole.p75*pm).toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -779,6 +811,7 @@
       const [selectedRoleId, setSelectedRoleId] = useState('eng-sr');
       const [filters, setFilters] = useState({ fn: 'All', level: 'All', country: 'AR' });
       const [searchOpen, setSearchOpen] = useState(false);
+      const [period, setPeriod] = useState('monthly');
       const showOrg = true;
 
       useEffect(() => {
@@ -794,10 +827,10 @@
       }, []);
 
       let content;
-      if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} />;
-      else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} />;
-      else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} />;
-      else if (nav === 'bands')                 content = <Bands />;
+      if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} />;
+      else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} period={period} />;
+      else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} period={period} />;
+      else if (nav === 'bands')                 content = <Bands period={period} />;
       else if (nav === 'org' || nav==='ratios') content = <Org />;
       else if (nav === 'contribute')            content = <Contribute setNav={setNav} />;
       else if (nav === 'settings')              content = <Settings />;
@@ -806,7 +839,7 @@
         <div style={{ display:'grid', gridTemplateColumns:'220px 1fr', minHeight:'100vh', background:S.bg, fontFamily:S.font, color:S.ink }}>
           <Sidebar nav={nav} setNav={setNav} showOrg={showOrg} />
           <div style={{ display:'flex', flexDirection:'column', minHeight:'100%' }}>
-            <Topbar onSearch={() => setSearchOpen(true)} />
+            <Topbar onSearch={() => setSearchOpen(true)} period={period} setPeriod={setPeriod} />
             <div style={{ flex:1, overflow:'auto' }}>{content}</div>
           </div>
           <SearchModal
@@ -814,6 +847,7 @@
             onClose={() => setSearchOpen(false)}
             setNav={setNav}
             setSelectedRoleId={setSelectedRoleId}
+            period={period}
           />
         </div>
       );

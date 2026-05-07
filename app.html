@@ -133,6 +133,7 @@
     function Sidebar({ nav, setNav, showOrg }) {
       const items = [
         { id: 'home',       label: 'Home',         icon: '▢' },
+        { id: 'insights',   label: 'Insights',     icon: '◆', section: 'Intelligence' },
         { id: 'comp',       label: 'Compensation',  icon: '◈', section: 'PulsoComp' },
         { id: 'role',       label: 'Role detail',   icon: '·', indent: true },
         { id: 'bands',      label: 'Bands',         icon: '·', indent: true },
@@ -866,6 +867,98 @@
       );
     }
 
+    function Insights({ period }) {
+      const pm = period === 'annual' ? 12 : 1;
+      const periodSuffix = period === 'annual' ? '/yr' : '/mo';
+      const srEngP25 = Math.round(5400 * pm);
+      const srEngP50 = Math.round(6100 * pm);
+      const pmP50    = Math.round(7900 * pm);
+      const delta    = Math.round(700 * pm);
+
+      const cards = [
+        {
+          icon: '⚠',
+          iconBg: `${S.watch}20`,
+          border: `2px solid ${S.watch}`,
+          bg: S.surface,
+          title: 'Senior Engineer offers at P25 are slowing Engineering growth',
+          body: [
+            { label: 'PulsoComp', text: `Your Senior Eng. offers avg. $${srEngP25.toLocaleString()}${periodSuffix} (P25).` },
+            { label: 'PulsoOrg',  text: 'You\'re 3 engineers below benchmark for Series A. Target HC is 22, you\'re at 19.' },
+            { label: 'Impact',    text: '67% of candidates at this level decline offers below P40.' },
+          ],
+          cta: null,
+          rec: `Move Senior Eng. anchor to P50 ($${srEngP50.toLocaleString()}${periodSuffix}). Budget impact: +$${delta.toLocaleString()}${periodSuffix} × 3 hires. Solves both comp competitiveness and HC gap.`,
+        },
+        {
+          icon: '◈',
+          iconBg: `${S.accent}15`,
+          border: `1px solid ${S.line}`,
+          bg: S.surface,
+          title: 'Eng:PM ratio suggests adding a Senior PM in Q2',
+          body: [
+            { label: 'PulsoOrg',  text: 'Current ratio 12:1 (24 eng / 2 PM). Healthy range: 6–10:1.' },
+            { label: 'PulsoComp', text: `Sr. PM market rate: $${pmP50.toLocaleString()}${periodSuffix} (P50).` },
+            { label: 'Timing',    text: '78% of peers made this hire before raising Series B.' },
+          ],
+          cta: 'Open req for Sr. PM →',
+          rec: null,
+        },
+        {
+          icon: '✓',
+          iconBg: `${S.good}20`,
+          border: `1px solid ${S.good}`,
+          bg: `${S.good}08`,
+          title: 'Data / Engineering ratio is healthy',
+          body: [
+            { label: 'PulsoOrg',   text: '4 Data Scientists for 24 Engineers = 6:1 ratio.' },
+            { label: 'Benchmark',  text: 'Fintech Series A median is 5.2:1.' },
+            { label: 'PulsoComp',  text: 'Your Data Scientist comp is at P52 — retaining well.' },
+          ],
+          cta: null,
+          rec: null,
+        },
+      ];
+
+      return (
+        <div style={{ padding: '24px 28px 60px' }}>
+          <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>Structural intelligence</div>
+          <div style={{ fontSize: 13, color: S.inkMuted, marginBottom: 24 }}>How your compensation strategy impacts organizational health</div>
+
+          {cards.map((c, i) => (
+            <div key={i} style={{ padding: 20, background: c.bg, border: c.border, borderRadius: 10, marginBottom: 14 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                <div style={{ width: 42, height: 42, borderRadius: 10, background: c.iconBg, display: 'grid', placeItems: 'center', fontSize: 18, fontWeight: 700, color: S.ink, flexShrink: 0 }}>
+                  {c.icon}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: S.ink, marginBottom: 10 }}>{c.title}</div>
+                  <div style={{ fontSize: 13, color: S.inkSoft, lineHeight: 1.7, marginBottom: c.rec || c.cta ? 12 : 0 }}>
+                    {c.body.map((b, j) => (
+                      <span key={j}>
+                        <strong style={{ color: S.ink }}>{b.label}:</strong> {b.text}
+                        {j < c.body.length - 1 ? <br /> : null}
+                      </span>
+                    ))}
+                  </div>
+                  {c.rec && (
+                    <div style={{ padding: '10px 14px', background: S.accentSoft, borderRadius: 6, fontSize: 13, color: S.ink }}>
+                      <strong>Recommendation:</strong> {c.rec}
+                    </div>
+                  )}
+                  {c.cta && (
+                    <button style={{ padding: '8px 14px', background: S.accent, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>
+                      {c.cta}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
     function App() {
       const [nav, setNav] = useState('home');
       const [selectedRoleId, setSelectedRoleId] = useState('eng-sr');
@@ -889,6 +982,7 @@
 
       let content;
       if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} userRole={userRole} />;
+      else if (nav === 'insights')              content = <Insights period={period} />;
       else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} period={period} />;
       else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} period={period} />;
       else if (nav === 'bands')                 content = <Bands period={period} />;

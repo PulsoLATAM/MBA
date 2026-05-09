@@ -87,8 +87,8 @@
 
     const PULSO_ORG_BENCH = [
       { fn: 'Engineering', mine: 24, benchP25: 18, benchP50: 22, benchP75: 28, health: 'ok'  },
-      { fn: 'Product',     mine: 8,  benchP25: 6,  benchP50: 8,  benchP75: 11, health: 'ok'  },
-      { fn: 'Design',      mine: 5,  benchP25: 4,  benchP50: 6,  benchP75: 8,  health: 'ok'  },
+      { fn: 'Product',     mine: 5,  benchP25: 4,  benchP50: 5,  benchP75: 7,  health: 'ok'  },
+      { fn: 'Design',      mine: 6,  benchP25: 5,  benchP50: 6,  benchP75: 8,  health: 'ok'  },
       { fn: 'Data',        mine: 4,  benchP25: 3,  benchP50: 5,  benchP75: 7,  health: 'ok'  },
       { fn: 'Marketing',   mine: 6,  benchP25: 5,  benchP50: 7,  benchP75: 9,  health: 'ok'  },
       { fn: 'Sales',       mine: 9,  benchP25: 7,  benchP50: 10, benchP75: 14, health: 'ok'  },
@@ -97,8 +97,8 @@
     ];
 
     const PULSO_RATIOS = [
-      { label: 'Eng:PM',    mine: '3.0:1', bench: '2.8:1', status: 'ok'    },
-      { label: 'Eng:Des',   mine: '4.8:1', bench: '4.2:1', status: 'watch' },
+      { label: 'Eng:PM',    mine: '4.8:1', bench: '5.0:1', status: 'ok'    },
+      { label: 'Eng:Des',   mine: '4.0:1', bench: '4.0:1', status: 'ok'    },
       { label: 'GTM:R&D',   mine: '0.47',  bench: '0.52',  status: 'ok'    },
       { label: 'Mgr span',  mine: '6.2',   bench: '6.8',   status: 'ok'    },
       { label: 'IC:Mgr',    mine: '7.2:1', bench: '6.5:1', status: 'ok'    }
@@ -201,7 +201,7 @@
         nextHires: 'Próximas contrataciones sugeridas', addBtn: 'Agregar',
         hires: [
           { role:'Senior Data Scientist', reason:'Data en P25. Pares suman 1.6 antes de Serie B.', when:'Q2 2026', cost:'$6.8k' },
-          { role:'Lead Product Manager',  reason:'Eng:PM = 12:1 vs cohorte 10:1.',               when:'Q2 2026', cost:'$8.7k' },
+          { role:'Head of Design',        reason:'6 diseñadores sin lead. 72% de los pares de Serie B tienen este rol.', when:'Q2 2026', cost:'$9.4k' },
           { role:'Head of Data',          reason:'78% de los pares de Serie B tienen este rol.',   when:'Q3 2026', cost:'$11.2k' },
         ],
         stepOf: 'Paso', stepOf2: 'de 3',
@@ -321,7 +321,7 @@
         nextHires: 'Próximas contratações sugeridas', addBtn: 'Adicionar',
         hires: [
           { role:'Senior Data Scientist', reason:'Data no P25. Pares adicionam 1.6 antes da Série B.', when:'Q2 2026', cost:'$6.8k' },
-          { role:'Lead Product Manager',  reason:'Eng:PM = 12:1 vs grupo 10:1.',                       when:'Q2 2026', cost:'$8.7k' },
+          { role:'Head of Design',        reason:'6 designers sem liderança. 72% dos pares de Série B têm esse cargo.', when:'Q2 2026', cost:'$9.4k' },
           { role:'Head of Data',          reason:'78% dos pares de Série B têm esse cargo.',            when:'Q3 2026', cost:'$11.2k' },
         ],
         stepOf: 'Passo', stepOf2: 'de 3',

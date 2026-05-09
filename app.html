@@ -581,9 +581,11 @@
                 </div>
                 <div style={{ fontSize: 17, fontWeight: 600, color: S.ink, marginBottom: 6, letterSpacing: -0.2 }}>{p.headline}</div>
                 <div style={{ fontSize: 13, color: S.inkMuted, lineHeight: 1.55, marginBottom: 16 }}>{p.desc}</div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: p.badgeTone, background: `${p.badgeTone}15`, padding: '3px 10px', borderRadius: 100 }}>{p.badge}</span>
-                  <span style={{ fontSize: 12, fontWeight: 500, color: S.accent }}>{p.cta}</span>
+                <div>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: p.badgeTone, background: `${p.badgeTone}15`, padding: '3px 10px', borderRadius: 100, display: 'inline-block', marginBottom: 10 }}>{p.badge}</span>
+                  <div style={{ textAlign: 'right' }}>
+                    <span style={{ fontSize: 12, fontWeight: 500, color: S.accent }}>{p.cta}</span>
+                  </div>
                 </div>
               </div>
             ))}

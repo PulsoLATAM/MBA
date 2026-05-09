@@ -453,122 +453,6 @@
       );
     }
 
-    function SearchModal({ open, onClose, setNav, setSelectedRoleId, period, lang }) {
-      const t = STRINGS[lang];
-      const [q, setQ] = React.useState('');
-      const [sel, setSel] = React.useState(-1);
-      const inputRef = React.useRef(null);
-
-      const results = React.useMemo(() => {
-        const lq = q.trim().toLowerCase();
-        const pm = period === 'annual' ? 12 : 1;
-        const periodSuffix = period === 'annual' ? '/yr' : '/mo';
-        const roleItems = PULSO_ROLES.map(r => ({
-          type: 'role', id: r.id,
-          title: `${r.role} — ${r.level}`,
-          meta: `P50 $${Math.round(r.p50*pm).toLocaleString()}${periodSuffix} · ${r.fn}`,
-          badge: 'PulsoComp',
-        }));
-        const peerItems = PULSO_PEERS.map(p => ({
-          type: 'peer', id: p.id,
-          title: `Company ${p.id}`,
-          meta: p.mask,
-          badge: 'Peer',
-        }));
-        const all = [...roleItems, ...peerItems];
-        if (!lq) return all.slice(0, 8);
-        return all.filter(x =>
-          x.title.toLowerCase().includes(lq) ||
-          x.meta.toLowerCase().includes(lq)
-        );
-      }, [q]);
-
-      React.useEffect(() => {
-        if (open) { setQ(''); setSel(-1); setTimeout(() => inputRef.current?.focus(), 30); }
-      }, [open]);
-
-      React.useEffect(() => { setSel(-1); }, [q]);
-
-      function handleKey(e) {
-        if (e.key === 'ArrowDown') { e.preventDefault(); setSel(s => Math.min(results.length - 1, s + 1)); }
-        if (e.key === 'ArrowUp')   { e.preventDefault(); setSel(s => Math.max(0, s - 1)); }
-        if (e.key === 'Enter' && sel >= 0) pick(results[sel]);
-        if (e.key === 'Escape') onClose();
-      }
-
-      function pick(item) {
-        onClose();
-        if (item.type === 'role') { setSelectedRoleId(item.id); setNav('role'); }
-      }
-
-      if (!open) return null;
-
-      const badgeColor = { PulsoComp: { bg: '#eef9ff', c: '#0899A8' }, Peer: { bg: '#fff4ec', c: '#C2410C' } };
-      const iconBg     = { role: '#e0f7fa', peer: '#f3e8ff' };
-      const iconChar   = { role: '💼', peer: '🏢' };
-
-      return (
-        <div onClick={e => e.target === e.currentTarget && onClose()} style={{
-          position: 'fixed', inset: 0, zIndex: 1000,
-          background: 'rgba(11,13,16,0.45)', backdropFilter: 'blur(5px)',
-          display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 90,
-        }}>
-          <div style={{ background: '#fff', borderRadius: 14, width: '100%', maxWidth: 580, margin: '0 16px', boxShadow: '0 24px 72px rgba(0,0,0,0.22)', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 18px', borderBottom: `1px solid ${S.line}` }}>
-              <span style={{ fontSize: 16, color: S.inkMuted }}>⌕</span>
-              <input
-                ref={inputRef}
-                value={q}
-                onChange={e => setQ(e.target.value)}
-                onKeyDown={handleKey}
-                placeholder={t.searchPh + '…'}
-                style={{ flex: 1, border: 'none', outline: 'none', fontSize: '0.95rem', fontFamily: S.font, color: S.ink, background: 'transparent' }}
-              />
-              <span onClick={onClose} style={{ fontSize: '0.7rem', fontWeight: 600, background: '#f1f2f4', border: `1px solid ${S.line}`, borderRadius: 5, padding: '2px 8px', color: S.inkMuted, cursor: 'pointer' }}>ESC</span>
-            </div>
-
-            <div style={{ maxHeight: 380, overflowY: 'auto', padding: '6px 0 10px' }}>
-              {results.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '36px 20px', color: S.inkMuted, fontSize: 13 }}>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: S.ink, marginBottom: 6 }}>{t.noResults} "{q}"</div>
-                  {t.trySearch}
-                </div>
-              )}
-              {results.length > 0 && !q && (
-                <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: S.inkFaint, padding: '10px 18px 4px' }}>{t.suggestions}</div>
-              )}
-              {results.map((item, i) => {
-                const bc = badgeColor[item.badge] || { bg: '#f3f4f6', c: S.inkMuted };
-                return (
-                  <div key={item.id + i} onClick={() => pick(item)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '9px 18px', cursor: 'pointer', background: sel === i ? '#f0fafb' : 'transparent' }}
-                    onMouseEnter={() => setSel(i)}
-                  >
-                    <div style={{ width: 34, height: 34, borderRadius: 9, background: iconBg[item.type] || '#f3f4f6', display: 'grid', placeItems: 'center', fontSize: '0.95rem', flexShrink: 0 }}>
-                      {iconChar[item.type]}
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: S.ink, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.title}</div>
-                      <div style={{ fontSize: '0.73rem', color: S.inkMuted, marginTop: 1 }}>{item.meta}</div>
-                    </div>
-                    <span style={{ fontSize: '0.67rem', fontWeight: 700, padding: '3px 8px', borderRadius: 100, background: bc.bg, color: bc.c, flexShrink: 0 }}>{item.badge}</span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div style={{ borderTop: `1px solid ${S.line}`, padding: '9px 18px', display: 'flex', gap: 14 }}>
-              {t.hints.map(([k,l]) => (
-                <span key={k} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.7rem', color: S.inkFaint }}>
-                  <kbd style={{ background: '#f1f2f4', border: `1px solid ${S.line}`, borderRadius: 4, padding: '1px 5px', fontFamily: S.font, fontSize: '0.68rem' }}>{k}</kbd>{l}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     function PeriodToggle({ period, setPeriod, lang }) {
       const t = STRINGS[lang];
       return (
@@ -588,8 +472,9 @@
       );
     }
 
-    function Topbar({ onSearch, period, setPeriod, userRole, setUserRole, lang, setLang }) {
+    function Topbar({ nav, period, setPeriod, userRole, setUserRole, lang, setLang }) {
       const t = STRINGS[lang];
+      const showPeriod = nav === 'comp' || nav === 'role' || nav === 'bands';
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 24px', borderBottom: `1px solid ${S.line}`, background: S.surface }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -626,9 +511,9 @@
             </>)}
           </div>
           <div style={{ flex: 1 }} />
-          <PeriodToggle period={period} setPeriod={setPeriod} lang={lang} />
+          {showPeriod && <PeriodToggle period={period} setPeriod={setPeriod} lang={lang} />}
           <div style={{ display: 'flex', background: S.lineSoft, borderRadius: 7, padding: 3, gap: 2 }}>
-            {[{code:'es',label:'🇦🇷 ES'},{code:'pt',label:'🇧🇷 PT'}].map(l => (
+            {[{code:'es',label:'ES'},{code:'pt',label:'POR'}].map(l => (
               <button key={l.code} onClick={() => setLang(l.code)} style={{
                 padding: '4px 10px', borderRadius: 5, border: 'none', cursor: 'pointer',
                 fontSize: 11, fontWeight: 600, fontFamily: S.font,
@@ -638,14 +523,6 @@
                 transition: 'all 0.15s',
               }}>{l.label}</button>
             ))}
-          </div>
-          <div onClick={onSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', border: `1px solid ${S.line}`, borderRadius: 7, fontSize: 12, color: S.inkMuted, width: 240, cursor: 'pointer', transition: 'border-color 0.15s' }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = S.accent}
-            onMouseLeave={e => e.currentTarget.style.borderColor = S.line}
-          >
-            <span style={{ fontSize: 14 }}>⌕</span>
-            <span>Search roles, bands, peers</span>
-            <span style={{ marginLeft: 'auto', fontFamily: S.mono, fontSize: 10 }}>⌘K</span>
           </div>
           <button style={{ padding: '7px 12px', background: S.ink, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>{t.contributeBtn}</button>
         </div>
@@ -1176,7 +1053,6 @@
       const [nav, setNav] = useState('home');
       const [selectedRoleId, setSelectedRoleId] = useState('eng-sr');
       const [filters, setFilters] = useState({ fn: 'All', level: 'All', country: 'AR' });
-      const [searchOpen, setSearchOpen] = useState(false);
       const [period, setPeriod] = useState('monthly');
       const [userRole, setUserRole] = useState('startup');
       const [lang, setLang] = useState('es');
@@ -1185,14 +1061,6 @@
       useEffect(() => {
         if (!showOrg && (nav === 'org' || nav === 'ratios')) setNav('home');
       }, [showOrg, nav]);
-
-      useEffect(() => {
-        function onKey(e) {
-          if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(true); }
-        }
-        document.addEventListener('keydown', onKey);
-        return () => document.removeEventListener('keydown', onKey);
-      }, []);
 
       let content;
       if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} userRole={userRole} lang={lang} />;
@@ -1207,17 +1075,9 @@
         <div style={{ display:'grid', gridTemplateColumns:'220px 1fr', minHeight:'100vh', background:S.bg, fontFamily:S.font, color:S.ink }}>
           <Sidebar nav={nav} setNav={setNav} showOrg={showOrg} lang={lang} />
           <div style={{ display:'flex', flexDirection:'column', minHeight:'100%' }}>
-            <Topbar onSearch={() => setSearchOpen(true)} period={period} setPeriod={setPeriod} userRole={userRole} setUserRole={setUserRole} lang={lang} setLang={setLang} />
+            <Topbar nav={nav} period={period} setPeriod={setPeriod} userRole={userRole} setUserRole={setUserRole} lang={lang} setLang={setLang} />
             <div style={{ flex:1, overflow:'auto' }}>{content}</div>
           </div>
-          <SearchModal
-            open={searchOpen}
-            onClose={() => setSearchOpen(false)}
-            setNav={setNav}
-            setSelectedRoleId={setSelectedRoleId}
-            period={period}
-            lang={lang}
-          />
         </div>
       );
     }

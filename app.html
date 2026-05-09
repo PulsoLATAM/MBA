@@ -138,7 +138,7 @@
             accelerator: 'Seguí la salud de compensación en las 28 empresas del portafolio en un solo lugar.',
             vc: 'Comparar empresas target con datos de mercado LATAM antes de invertir.',
           },
-          badges: { startup:'7 de 12 roles sobre la mediana de mercado', accelerator:'3 empresas necesitan revisión salarial', vc:'6 alertas de riesgo de compensación' },
+          badges: { startup:'9 de 12 roles bajo la mediana de mercado', accelerator:'3 empresas necesitan revisión salarial', vc:'6 alertas de riesgo de compensación' },
           cta: 'Explorar salarios →',
         },
         orgCard: {
@@ -164,9 +164,9 @@
             { icon:'!', text:'Solo 2 de 14 reportes de DD están completos. 12 aún en progreso.' },
           ],
           startup: [
-            { icon:'✓', text:'La mayoría de tus salarios son competitivos — 7 de 12 roles están en o sobre la mediana.' },
-            { icon:'⚠', text:'Tu equipo de Finanzas es más pequeño que empresas similares — considerá contratar.' },
-            { icon:'!', text:'2 ingenieros están siendo pagados por debajo del mercado — aumenta el riesgo de que se vayan.' },
+            { icon:'✓', text:'Tu estructura de equipo es saludable — ratios Eng:PM y Eng:Des en línea con el benchmark.' },
+            { icon:'⚠', text:'9 de 12 roles están bajo la mediana de mercado — revisá bandas antes de tu próxima ronda.' },
+            { icon:'!', text:'3 ingenieros están en P25 o abajo — riesgo alto de rotación en los próximos 6 meses.' },
           ],
         },
         marketTitle: 'Mercado LATAM esta semana',
@@ -258,7 +258,7 @@
             accelerator: 'Acompanhe a saúde da remuneração em todas as 28 empresas do portfólio em um só lugar.',
             vc: 'Compare empresas-alvo com dados de mercado da LATAM antes de investir.',
           },
-          badges: { startup:'7 de 12 cargos acima da mediana de mercado', accelerator:'3 empresas precisam de revisão salarial', vc:'6 alertas de risco de remuneração' },
+          badges: { startup:'9 de 12 cargos abaixo da mediana de mercado', accelerator:'3 empresas precisam de revisão salarial', vc:'6 alertas de risco de remuneração' },
           cta: 'Explorar salários →',
         },
         orgCard: {
@@ -284,9 +284,9 @@
             { icon:'!', text:'Apenas 2 de 14 relatórios de DD estão completos. 12 ainda em andamento.' },
           ],
           startup: [
-            { icon:'✓', text:'A maioria dos seus salários é competitiva — 7 de 12 cargos estão na ou acima da mediana.' },
-            { icon:'⚠', text:'Sua equipe de Finanças é menor do que empresas similares — considere contratar.' },
-            { icon:'!', text:'2 engenheiros estão sendo pagos abaixo do mercado — aumenta o risco de saída.' },
+            { icon:'✓', text:'Sua estrutura de equipe é saudável — ratios Eng:PM e Eng:Des alinhados ao benchmark.' },
+            { icon:'⚠', text:'9 de 12 cargos estão abaixo da mediana de mercado — revise as faixas antes da próxima rodada.' },
+            { icon:'!', text:'3 engenheiros estão no P25 ou abaixo — alto risco de rotatividade nos próximos 6 meses.' },
           ],
         },
         marketTitle: 'Mercado LATAM esta semana',
@@ -538,7 +538,7 @@
           headline: t.compCard.headlines[userRole],
           desc: t.compCard.descs[userRole],
           badge: t.compCard.badges[userRole],
-          badgeTone: userRole === 'startup' ? S.good : S.bad,
+          badgeTone: userRole === 'startup' ? S.bad : S.bad,
           cta: t.compCard.cta,
         },
         showOrg && {

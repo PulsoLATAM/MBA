@@ -271,7 +271,7 @@
         }}>
           <div style={{ background: '#fff', borderRadius: 14, width: '100%', maxWidth: 580, margin: '0 16px', boxShadow: '0 24px 72px rgba(0,0,0,0.22)', overflow: 'hidden' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 18px', borderBottom: `1px solid ${S.line}` }}>
-              <span style={{ fontSize: 16, color: S.inkMuted }}>⎕</span>
+              <span style={{ fontSize: 16, color: S.inkMuted }}>⌕</span>
               <input
                 ref={inputRef}
                 value={q}
@@ -385,7 +385,7 @@
             onMouseEnter={e => e.currentTarget.style.borderColor = S.accent}
             onMouseLeave={e => e.currentTarget.style.borderColor = S.line}
           >
-            <span style={{ fontSize: 14 }}>⎕</span>
+            <span style={{ fontSize: 14 }}>⌕</span>
             <span>Search roles, bands, peers</span>
             <span style={{ marginLeft: 'auto', fontFamily: S.mono, fontSize: 10 }}>⌘K</span>
           </div>
@@ -1121,4 +1121,3 @@
     root.render(<App />);
   </script>
 </body>
-</html>

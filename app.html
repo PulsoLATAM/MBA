@@ -111,6 +111,21 @@
       { kind: 'plan',   severity: 'med',  text: 'Data Science P75 +7% (30d) — budget pressure in Q3' }
     ];
 
+    const PORTFOLIO_ORG = [
+      { company:'Nuvelo',   stage:'Serie A', hc:62,  engPm:'4.8:1', engDes:'4.0:1', score:7.8, status:'ok'    },
+      { company:'Pagalo',   stage:'Serie A', hc:48,  engPm:'5.2:1', engDes:'4.3:1', score:8.1, status:'ok'    },
+      { company:'Credify',  stage:'Seed',    hc:22,  engPm:'6.0:1', engDes:'5.5:1', score:6.4, status:'watch' },
+      { company:'FlowPay',  stage:'Serie B', hc:134, engPm:'4.2:1', engDes:'3.9:1', score:8.6, status:'ok'    },
+      { company:'Monto',    stage:'Seed',    hc:18,  engPm:'7.0:1', engDes:'6.0:1', score:5.9, status:'watch' },
+    ];
+
+    const VC_ORG_TARGETS = [
+      { company:'Target A', stage:'Pre-Serie A', hc:31, engPm:'5.5:1', maturity:'Alta',  ready:true  },
+      { company:'Target B', stage:'Seed',        hc:14, engPm:'8.0:1', maturity:'Baja',  ready:false },
+      { company:'Target C', stage:'Pre-Serie A', hc:27, engPm:'5.2:1', maturity:'Media', ready:false },
+      { company:'Target D', stage:'Seed',        hc:11, engPm:'9.0:1', maturity:'Baja',  ready:false },
+    ];
+
     const STRINGS = {
       es: {
         nav: { home:'Inicio', comp:'Compensación', role:'Detalle de rol', bands:'Bandas', org:'Estructura', ratios:'Ratios', contribute:'Contribuir', settings:'Configuración' },
@@ -125,7 +140,7 @@
         trySearch: 'Probá: "Engineer", "Product", "Fintech"',
         suggestions: 'Sugerencias',
         hints: [['↑↓','navegar'],['↵','abrir'],['ESC','cerrar']],
-        greetings: { startup:'Buenos días, Carolina', accelerator:'Buenos días, Fortia', vc:'Buenos días, Orion' },
+        greetings: { startup:'Buenos días, Nuvelo', accelerator:'Buenos días, Fortia', vc:'Buenos días, Orion' },
         sublines: {
           startup: 'Conjunto de pares: 284 fintechs LATAM · Serie A · actualizado hoy',
           accelerator: '28 empresas en cartera · 8 países · actualizado hoy',
@@ -196,8 +211,12 @@
         bandsExport: 'Exportar política', bandsPreview: 'Vista previa',
         marketP25: 'Mercado P25', marketP75: 'Mercado P75',
         orgTitle: 'Estructura organizacional',
-        orgSub: 'personas · 47 pares en Fintech · Serie A · LATAM',
+        orgSub: { startup:'62 personas · 47 pares en Fintech · Serie A · LATAM', accelerator:'28 empresas en cartera · 8 países · LATAM', vc:'14 targets activos · Fintech LATAM · due diligence' },
         hcByFn: 'Headcount por función', hcLegend: 'Barra: vos · Rango: benchmark P25–P75',
+        portfolioCols: ['Empresa','Etapa','HC','Eng:PM','Eng:Des','Score','Estado'],
+        portfolioStatus: { ok:'Saludable', watch:'Revisar' },
+        vcCols: ['Target','Etapa','HC','Eng:PM','Madurez org.','Listo Serie A'],
+        vcReady: { yes:'Sí', no:'No' },
         nextHires: 'Próximas contrataciones sugeridas', addBtn: 'Agregar',
         hires: [
           { role:'Senior Data Scientist', reason:'Data en P25. Pares suman 1.6 antes de Serie B.', when:'Q2 2026', cost:'$6.8k' },
@@ -245,7 +264,7 @@
         trySearch: 'Tente: "Engineer", "Product", "Fintech"',
         suggestions: 'Sugestões',
         hints: [['↑↓','navegar'],['↵','abrir'],['ESC','fechar']],
-        greetings: { startup:'Bom dia, Carolina', accelerator:'Bom dia, Fortia', vc:'Bom dia, Orion' },
+        greetings: { startup:'Bom dia, Nuvelo', accelerator:'Bom dia, Fortia', vc:'Bom dia, Orion' },
         sublines: {
           startup: 'Grupo de pares: 284 fintechs LATAM · Série A · atualizado hoje',
           accelerator: '28 empresas no portfólio · 8 países · atualizado hoje',
@@ -316,8 +335,12 @@
         bandsExport: 'Exportar política', bandsPreview: 'Pré-visualização',
         marketP25: 'Mercado P25', marketP75: 'Mercado P75',
         orgTitle: 'Estrutura organizacional',
-        orgSub: 'pessoas · 47 pares em Fintech · Série A · LATAM',
+        orgSub: { startup:'62 pessoas · 47 pares em Fintech · Série A · LATAM', accelerator:'28 empresas no portfólio · 8 países · LATAM', vc:'14 alvos ativos · Fintech LATAM · due diligence' },
         hcByFn: 'Headcount por função', hcLegend: 'Barra: você · Faixa: benchmark P25–P75',
+        portfolioCols: ['Empresa','Estágio','HC','Eng:PM','Eng:Des','Score','Estado'],
+        portfolioStatus: { ok:'Saudável', watch:'Revisar' },
+        vcCols: ['Alvo','Estágio','HC','Eng:PM','Maturidade org.','Pronto Série A'],
+        vcReady: { yes:'Sim', no:'Não' },
         nextHires: 'Próximas contratações sugeridas', addBtn: 'Adicionar',
         hires: [
           { role:'Senior Data Scientist', reason:'Data no P25. Pares adicionam 1.6 antes da Série B.', when:'Q2 2026', cost:'$6.8k' },
@@ -888,60 +911,106 @@
       );
     }
 
-    function Org({ lang }) {
+    function Org({ lang, userRole }) {
       const t = STRINGS[lang];
       return (
         <div style={{ padding:'24px 28px 60px' }}>
           <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3 }}>{t.orgTitle}</div>
-          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>62 {t.orgSub}</div>
-          <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden', marginBottom:18 }}>
-            <div style={{ padding:'14px 16px', borderBottom:`1px solid ${S.line}`, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-              <div style={{ fontSize:14, fontWeight:600, color:S.ink }}>{t.hcByFn}</div>
-              <div style={{ fontSize:12, color:S.inkMuted }}>{t.hcLegend}</div>
-            </div>
-            {PULSO_ORG_BENCH.map((x,i) => {
-              const max=30, tone=x.health==='low'?S.watch:S.good;
-              return (
-                <div key={i} style={{ display:'grid', gridTemplateColumns:'140px 1fr 60px 60px', gap:12, padding:'12px 16px', borderBottom:i<PULSO_ORG_BENCH.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
-                  <div style={{ fontSize:13, color:S.ink, fontWeight:500 }}>{x.fn}</div>
-                  <div style={{ position:'relative', height:22 }}>
-                    <div style={{ position:'absolute', top:10, left:0, right:0, height:1, background:S.lineSoft }} />
-                    <div style={{ position:'absolute', top:6, left:`${(x.benchP25/max)*100}%`, width:`${((x.benchP75-x.benchP25)/max)*100}%`, height:10, border:`1px solid ${S.inkFaint}`, borderRadius:5 }} />
-                    <div style={{ position:'absolute', top:3, left:`calc(${(x.benchP50/max)*100}% - 1px)`, width:2, height:16, background:S.inkMuted }} />
-                    <div style={{ position:'absolute', top:6, left:0, width:`${(x.mine/max)*100}%`, height:10, background:tone, borderRadius:5 }} />
-                  </div>
-                  <div style={{ fontSize:12, fontFamily:S.mono, color:S.ink, textAlign:'right', fontWeight:600 }}>{x.mine}</div>
-                  <div style={{ fontSize:12, fontFamily:S.mono, color:S.inkMuted, textAlign:'right' }}>{x.benchP50}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:14, marginBottom:18 }}>
-            {PULSO_RATIOS.map((r,i) => {
-              const tone=r.status==='watch'?S.watch:S.good;
-              return (
-                <div key={i} style={{ padding:14, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
-                  <div style={{ fontSize:11, color:S.inkMuted, fontWeight:500 }}>{r.label}</div>
-                  <div style={{ fontSize:22, fontWeight:600, color:S.ink, marginTop:6, letterSpacing:-0.3 }}>{r.mine}</div>
-                  <div style={{ fontSize:11, color:tone, fontWeight:500, marginTop:3 }}>vs {r.bench}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
-            <div style={{ padding:'14px 16px', borderBottom:`1px solid ${S.line}`, fontSize:14, fontWeight:600, color:S.ink }}>{t.nextHires}</div>
-            {t.hires.map((x,i,a) => (
-              <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr auto auto auto', gap:14, padding:'14px 16px', borderBottom:i<a.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
-                <div>
-                  <div style={{ fontSize:13, color:S.ink, fontWeight:500 }}>{x.role}</div>
-                  <div style={{ fontSize:12, color:S.inkMuted, marginTop:2 }}>{x.reason}</div>
-                </div>
-                <div style={{ fontSize:12, color:S.inkMuted, fontFamily:S.mono }}>{x.when}</div>
-                <div style={{ fontSize:12, color:S.ink, fontFamily:S.mono, fontWeight:500 }}>{x.cost}/mo</div>
-                <button style={{ padding:'6px 12px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:12, fontWeight:500, cursor:'pointer' }}>{t.addBtn}</button>
+          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>{t.orgSub[userRole]}</div>
+
+          {userRole === 'startup' && (<>
+            <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden', marginBottom:18 }}>
+              <div style={{ padding:'14px 16px', borderBottom:`1px solid ${S.line}`, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <div style={{ fontSize:14, fontWeight:600, color:S.ink }}>{t.hcByFn}</div>
+                <div style={{ fontSize:12, color:S.inkMuted }}>{t.hcLegend}</div>
               </div>
-            ))}
-          </div>
+              {PULSO_ORG_BENCH.map((x,i) => {
+                const max=30, tone=x.health==='low'?S.watch:S.good;
+                return (
+                  <div key={i} style={{ display:'grid', gridTemplateColumns:'140px 1fr 60px 60px', gap:12, padding:'12px 16px', borderBottom:i<PULSO_ORG_BENCH.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
+                    <div style={{ fontSize:13, color:S.ink, fontWeight:500 }}>{x.fn}</div>
+                    <div style={{ position:'relative', height:22 }}>
+                      <div style={{ position:'absolute', top:10, left:0, right:0, height:1, background:S.lineSoft }} />
+                      <div style={{ position:'absolute', top:6, left:`${(x.benchP25/max)*100}%`, width:`${((x.benchP75-x.benchP25)/max)*100}%`, height:10, border:`1px solid ${S.inkFaint}`, borderRadius:5 }} />
+                      <div style={{ position:'absolute', top:3, left:`calc(${(x.benchP50/max)*100}% - 1px)`, width:2, height:16, background:S.inkMuted }} />
+                      <div style={{ position:'absolute', top:6, left:0, width:`${(x.mine/max)*100}%`, height:10, background:tone, borderRadius:5 }} />
+                    </div>
+                    <div style={{ fontSize:12, fontFamily:S.mono, color:S.ink, textAlign:'right', fontWeight:600 }}>{x.mine}</div>
+                    <div style={{ fontSize:12, fontFamily:S.mono, color:S.inkMuted, textAlign:'right' }}>{x.benchP50}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:14, marginBottom:18 }}>
+              {PULSO_RATIOS.map((r,i) => {
+                const tone=r.status==='watch'?S.watch:S.good;
+                return (
+                  <div key={i} style={{ padding:14, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
+                    <div style={{ fontSize:11, color:S.inkMuted, fontWeight:500 }}>{r.label}</div>
+                    <div style={{ fontSize:22, fontWeight:600, color:S.ink, marginTop:6, letterSpacing:-0.3 }}>{r.mine}</div>
+                    <div style={{ fontSize:11, color:tone, fontWeight:500, marginTop:3 }}>vs {r.bench}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
+              <div style={{ padding:'14px 16px', borderBottom:`1px solid ${S.line}`, fontSize:14, fontWeight:600, color:S.ink }}>{t.nextHires}</div>
+              {t.hires.map((x,i,a) => (
+                <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr auto auto auto', gap:14, padding:'14px 16px', borderBottom:i<a.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
+                  <div>
+                    <div style={{ fontSize:13, color:S.ink, fontWeight:500 }}>{x.role}</div>
+                    <div style={{ fontSize:12, color:S.inkMuted, marginTop:2 }}>{x.reason}</div>
+                  </div>
+                  <div style={{ fontSize:12, color:S.inkMuted, fontFamily:S.mono }}>{x.when}</div>
+                  <div style={{ fontSize:12, color:S.ink, fontFamily:S.mono, fontWeight:500 }}>{x.cost}/mo</div>
+                  <button style={{ padding:'6px 12px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:12, fontWeight:500, cursor:'pointer' }}>{t.addBtn}</button>
+                </div>
+              ))}
+            </div>
+          </>)}
+
+          {userRole === 'accelerator' && (
+            <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 80px 50px 70px 70px 60px 90px', gap:12, padding:'10px 16px', borderBottom:`1px solid ${S.line}`, background:S.bg }}>
+                {t.portfolioCols.map((c,i) => <div key={i} style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.3 }}>{c}</div>)}
+              </div>
+              {PORTFOLIO_ORG.map((x,i) => {
+                const tone = x.status==='watch' ? S.watch : S.good;
+                return (
+                  <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr 80px 50px 70px 70px 60px 90px', gap:12, padding:'12px 16px', borderBottom:i<PORTFOLIO_ORG.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
+                    <div style={{ fontSize:13, fontWeight:500, color:S.ink }}>{x.company}</div>
+                    <div style={{ fontSize:12, color:S.inkMuted }}>{x.stage}</div>
+                    <div style={{ fontSize:12, fontFamily:S.mono, color:S.ink }}>{x.hc}</div>
+                    <div style={{ fontSize:12, fontFamily:S.mono, color:S.ink }}>{x.engPm}</div>
+                    <div style={{ fontSize:12, fontFamily:S.mono, color:S.ink }}>{x.engDes}</div>
+                    <div style={{ fontSize:13, fontWeight:600, color:S.ink }}>{x.score}</div>
+                    <span style={{ fontSize:11, fontWeight:600, color:tone, background:`${tone}15`, padding:'3px 8px', borderRadius:100, display:'inline-block' }}>{t.portfolioStatus[x.status]}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {userRole === 'vc' && (
+            <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 100px 50px 70px 90px 110px', gap:12, padding:'10px 16px', borderBottom:`1px solid ${S.line}`, background:S.bg }}>
+                {t.vcCols.map((c,i) => <div key={i} style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.3 }}>{c}</div>)}
+              </div>
+              {VC_ORG_TARGETS.map((x,i) => {
+                const readyColor = x.ready ? S.good : S.watch;
+                return (
+                  <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr 100px 50px 70px 90px 110px', gap:12, padding:'12px 16px', borderBottom:i<VC_ORG_TARGETS.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
+                    <div style={{ fontSize:13, fontWeight:500, color:S.ink }}>{x.company}</div>
+                    <div style={{ fontSize:12, color:S.inkMuted }}>{x.stage}</div>
+                    <div style={{ fontSize:12, fontFamily:S.mono, color:S.ink }}>{x.hc}</div>
+                    <div style={{ fontSize:12, fontFamily:S.mono, color:S.ink }}>{x.engPm}</div>
+                    <div style={{ fontSize:12, color:S.ink }}>{x.maturity}</div>
+                    <span style={{ fontSize:11, fontWeight:600, color:readyColor, background:`${readyColor}15`, padding:'3px 8px', borderRadius:100, display:'inline-block' }}>{t.vcReady[x.ready?'yes':'no']}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       );
     }
@@ -1069,7 +1138,7 @@
       else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} period={period} lang={lang} />;
       else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} period={period} lang={lang} />;
       else if (nav === 'bands')                 content = <Bands period={period} lang={lang} />;
-      else if (nav === 'org' || nav==='ratios') content = <Org lang={lang} />;
+      else if (nav === 'org' || nav==='ratios') content = <Org lang={lang} userRole={userRole} />;
       else if (nav === 'contribute')            content = <Contribute setNav={setNav} lang={lang} />;
       else if (nav === 'settings')              content = <Settings lang={lang} />;
 

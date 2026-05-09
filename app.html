@@ -111,6 +111,257 @@
       { kind: 'plan',   severity: 'med',  text: 'Data Science P75 +7% (30d) — budget pressure in Q3' }
     ];
 
+    const STRINGS = {
+      es: {
+        nav: { home:'Inicio', insights:'Insights', comp:'Compensación', role:'Detalle de rol', bands:'Bandas', org:'Estructura', ratios:'Ratios', contribute:'Contribuir', settings:'Configuración' },
+        sec: { intelligence:'Inteligencia', pulsocomp:'PulsoComp', pulsoorg:'PulsoOrg', data:'Datos' },
+        coverage: 'Cobertura de datos',
+        views: { startup:'Vista startup', accelerator:'Vista aceleradora', vc:'Vista fondo' },
+        chips: { portfolio:'28 empresas en cartera', dd:'Modo due diligence' },
+        searchPh: 'Buscar roles, bandas, pares',
+        contributeBtn: 'Contribuir datos',
+        periods: { monthly:'mensual', annual:'anual' },
+        noResults: 'Sin resultados para',
+        trySearch: 'Probá: "Engineer", "Product", "Fintech"',
+        suggestions: 'Sugerencias',
+        hints: [['↑↓','navegar'],['↵','abrir'],['ESC','cerrar']],
+        greetings: { startup:'Buenos días, Carolina', accelerator:'Buenos días, Fortia', vc:'Buenos días, Orion' },
+        sublines: {
+          startup: 'Conjunto de pares: 284 fintechs LATAM · Serie A · actualizado hoy',
+          accelerator: '28 empresas en cartera · 8 países · actualizado hoy',
+          vc: '14 targets activos · Fintech LATAM · modo due diligence',
+        },
+        viewInsights: 'Ver insights →',
+        compCard: {
+          headlines: { startup:'¿Estás pagando de forma justa?', accelerator:'Compensación del portafolio', vc:'Due diligence de compensación' },
+          descs: {
+            startup: 'Comparar tus salarios con 284 empresas tech de LATAM en la misma etapa y tamaño.',
+            accelerator: 'Seguí la salud de compensación en las 28 empresas del portafolio en un solo lugar.',
+            vc: 'Comparar empresas target con datos de mercado LATAM antes de invertir.',
+          },
+          badges: { startup:'7 de 12 roles sobre la mediana de mercado', accelerator:'3 empresas necesitan revisión salarial', vc:'6 alertas de riesgo de compensación' },
+          cta: 'Explorar salarios →',
+        },
+        orgCard: {
+          headlines: { startup:'¿Tu equipo está bien estructurado?', accelerator:'Salud org. del portafolio', vc:'Análisis de estructura org.' },
+          descs: {
+            startup: 'Comparar la estructura de tu equipo con startups similares — y dónde contratar.',
+            accelerator: 'Comparar estructuras organizacionales e identificar riesgos de escala en el portafolio.',
+            vc: 'Evaluar la madurez organizacional antes de cerrar un deal.',
+          },
+          badges: { startup:'8 de 9 funciones saludables', accelerator:'Score promedio de salud org.: 7.8/10', vc:'2 de 14 targets listos para Serie B' },
+          cta: 'Explorar estructura →',
+        },
+        findingsTitle: 'Hallazgos clave',
+        findings: {
+          accelerator: [
+            { icon:'✓', text:'Las 28 empresas del portafolio están activas y actualizadas.' },
+            { icon:'⚠', text:'El crecimiento promedio de compensación es +12% vs. Q4 — dentro del rango saludable.' },
+            { icon:'!', text:'3 empresas están pagando por debajo del mercado — pueden tener dificultades para retener talento.' },
+          ],
+          vc: [
+            { icon:'✓', text:'3 targets muestran señales de madurez organizacional — listos para Serie A.' },
+            { icon:'⚠', text:'Alertas de riesgo de compensación en 4 de 14 targets — revisar antes del term sheet.' },
+            { icon:'!', text:'Solo 2 de 14 reportes de DD están completos. 12 aún en progreso.' },
+          ],
+          startup: [
+            { icon:'✓', text:'La mayoría de tus salarios son competitivos — 7 de 12 roles están en o sobre la mediana.' },
+            { icon:'⚠', text:'Tu equipo de Finanzas es más pequeño que empresas similares — considerá contratar.' },
+            { icon:'!', text:'2 ingenieros están siendo pagados por debajo del mercado — aumenta el riesgo de que se vayan.' },
+          ],
+        },
+        marketTitle: 'Mercado LATAM esta semana',
+        market: [
+          { t:'Argentina: bandas FE Senior +8% (ajuste cambiario)', s:'Fintech · AR · 30d' },
+          { t:'Brasil: 2 fintechs Serie B sumaron Head of Data', s:'Cohorte São Paulo' },
+          { t:'México: paquetes de equity para CFO movidos a 0.5–1.2%', s:'Serie A multisector' },
+          { t:'Regional: ratio Eng:PM se estrecha a 8.2:1', s:'Fintech LATAM' },
+        ],
+        compTitle: 'Explorador de compensación',
+        peerSet: 'Conjunto de pares: Fintech · Serie A · 40–120 FTE · últimos 90 días',
+        filterFn: 'Función', filterLevel: 'Nivel', filterCountry: 'País',
+        cols: { role:'Rol', fn:'Función', level:'Nivel', band:'Banda' },
+        fxLoading: 'Cargando tipo de cambio…', fxUnavail: 'Tipo de cambio no disponible',
+        fxUpdated: 'Actualizado', fxDaily: 'tasas actualizadas a diario',
+        periodSuffix: { monthly:'/mes', annual:'/año' },
+        periodLabel: { monthly:'USD/mes', annual:'USD/año' },
+        backExplorer: '← Explorador', dataPoints: 'puntos de datos',
+        peerCompanies: 'empresas pares', updatedAgo: 'actualizado hace 3 días',
+        distribution: 'Distribución', pkgComp: 'Composición del paquete',
+        peersInCohort: 'Empresas del grupo', yourOffer: 'Tu oferta',
+        aboveP50: 'sobre P50', belowP50: 'bajo P50',
+        pkg: ['Base','Variable','Equity','Beneficios'],
+        bandsTitle: 'Constructor de bandas', bandsSub: 'Ancla al mercado, ajustá el rango, publicá una política',
+        bandsRole: 'Rol', bandsAnchor: 'Ancla', bandsSpread: 'Rango',
+        bandsMin: 'Mín', bandsMid: 'Med', bandsMax: 'Máx',
+        bandsExport: 'Exportar política', bandsPreview: 'Vista previa',
+        marketP25: 'Mercado P25', marketP75: 'Mercado P75',
+        orgTitle: 'Estructura organizacional',
+        orgSub: 'personas · 47 pares en Fintech · Serie A · LATAM',
+        hcByFn: 'Headcount por función', hcLegend: 'Barra: vos · Rango: benchmark P25–P75',
+        nextHires: 'Próximas contrataciones sugeridas', addBtn: 'Agregar',
+        hires: [
+          { role:'Senior Data Scientist', reason:'Data en P25. Pares suman 1.6 antes de Serie B.', when:'Q2 2026', cost:'$6.8k' },
+          { role:'Lead Product Manager',  reason:'Eng:PM = 12:1 vs cohorte 10:1.',               when:'Q2 2026', cost:'$8.7k' },
+          { role:'Head of Data',          reason:'78% de los pares de Serie B tienen este rol.',   when:'Q3 2026', cost:'$11.2k' },
+        ],
+        stepOf: 'Paso', stepOf2: 'de 3',
+        steps: { 1:'Subir archivo de headcount', 2:'Confirmar mapeo de roles', 3:'Revisar contrato de datos' },
+        stepSubs: {
+          1:'CSV, Excel o conectá tu HRIS. Encriptado localmente antes de salir del navegador.',
+          2:'Mapeamos 62/62. Revisá 2 alertas abajo.',
+          3:'Qué va a hacer y qué no va a hacer Pulso con tus datos.',
+        },
+        dropFile: 'Arrastrá el archivo aquí o hacé clic para buscar',
+        fileReady: 'Encriptado localmente · listo para procesar',
+        fileConnect: 'CSV, XLSX, o conectá BambooHR / Rippling / Gusto',
+        cancelBtn: 'Cancelar', continueBtn: 'Continuar →', backBtn: 'Volver', signBtn: 'Firmar y contribuir →',
+        submissionTitle: 'Envío recibido',
+        submissionSub: '62 registros en cola. Integrados en tu cohorte en 24h. Filtros avanzados e informes de tendencia desbloqueados.',
+        openExplorer: 'Abrir explorador →', backHome: 'Volver al inicio',
+        mappingCols: ['Tu título','Canónico Pulso','Personas','Coincidencia'],
+        contract: [
+          { t:'Mínimo de agregación', d:'Tus datos aparecen en cohortes de 8+ pares.' },
+          { t:'Encriptado', d:'Nombres e IDs encriptados con SHA-256 en el cliente.' },
+          { t:'Propiedad de datos', d:'Eliminá tu contribución desde tu perfil cuando quieras.' },
+          { t:'Sin reventa', d:'No vendemos datos a nivel de fila.' },
+        ],
+        settingsTitle: 'Perfil de empresa', editBtn: 'Editar',
+        settingsFields: [
+          {k:'Nombre',v:'Nuvelo'},{k:'Industria',v:'Fintech'},
+          {k:'Etapa',v:'Series D · 2024 · USD 300M'},{k:'Sede',v:'Buenos Aires, Argentina'},
+          {k:'Headcount',v:'62 · 7 reqs abiertas'},{k:'Cohorte',v:'Fintech · Series D · LATAM · 40–120 FTE'},
+        ],
+        insightsTitle: 'Inteligencia estructural',
+        insightsSub: 'Cómo tu estrategia de compensación impacta la salud organizacional',
+        recommendation: 'Recomendación:',
+      },
+      pt: {
+        nav: { home:'Início', insights:'Insights', comp:'Remuneração', role:'Detalhe do cargo', bands:'Faixas', org:'Estrutura', ratios:'Ratios', contribute:'Contribuir', settings:'Configurações' },
+        sec: { intelligence:'Inteligência', pulsocomp:'PulsoComp', pulsoorg:'PulsoOrg', data:'Dados' },
+        coverage: 'Cobertura de dados',
+        views: { startup:'Visão startup', accelerator:'Visão aceleradora', vc:'Visão fundo' },
+        chips: { portfolio:'28 empresas no portfólio', dd:'Modo due diligence' },
+        searchPh: 'Buscar cargos, faixas, pares',
+        contributeBtn: 'Contribuir dados',
+        periods: { monthly:'mensal', annual:'anual' },
+        noResults: 'Sem resultados para',
+        trySearch: 'Tente: "Engineer", "Product", "Fintech"',
+        suggestions: 'Sugestões',
+        hints: [['↑↓','navegar'],['↵','abrir'],['ESC','fechar']],
+        greetings: { startup:'Bom dia, Carolina', accelerator:'Bom dia, Fortia', vc:'Bom dia, Orion' },
+        sublines: {
+          startup: 'Grupo de pares: 284 fintechs LATAM · Série A · atualizado hoje',
+          accelerator: '28 empresas no portfólio · 8 países · atualizado hoje',
+          vc: '14 alvos ativos · Fintech LATAM · modo due diligence',
+        },
+        viewInsights: 'Ver insights →',
+        compCard: {
+          headlines: { startup:'Você está pagando de forma justa?', accelerator:'Remuneração do portfólio', vc:'Due diligence de remuneração' },
+          descs: {
+            startup: 'Compare seus salários com 284 empresas de tecnologia da LATAM no mesmo estágio e tamanho.',
+            accelerator: 'Acompanhe a saúde da remuneração em todas as 28 empresas do portfólio em um só lugar.',
+            vc: 'Compare empresas-alvo com dados de mercado da LATAM antes de investir.',
+          },
+          badges: { startup:'7 de 12 cargos acima da mediana de mercado', accelerator:'3 empresas precisam de revisão salarial', vc:'6 alertas de risco de remuneração' },
+          cta: 'Explorar salários →',
+        },
+        orgCard: {
+          headlines: { startup:'Sua equipe está bem estruturada?', accelerator:'Saúde org. do portfólio', vc:'Análise de estrutura org.' },
+          descs: {
+            startup: 'Veja como sua estrutura de equipe se compara a startups similares — e onde contratar.',
+            accelerator: 'Compare estruturas organizacionais e identifique riscos de escala no portfólio.',
+            vc: 'Avalie a maturidade organizacional antes de fechar um deal.',
+          },
+          badges: { startup:'8 de 9 funções saudáveis', accelerator:'Score médio de saúde org.: 7.8/10', vc:'2 de 14 alvos prontos para Série B' },
+          cta: 'Explorar estrutura →',
+        },
+        findingsTitle: 'Principais achados',
+        findings: {
+          accelerator: [
+            { icon:'✓', text:'Todas as 28 empresas do portfólio estão ativas e atualizadas.' },
+            { icon:'⚠', text:'O crescimento médio de remuneração é +12% vs. Q4 — dentro da faixa saudável.' },
+            { icon:'!', text:'3 empresas estão pagando abaixo do mercado — podem ter dificuldades para reter talentos.' },
+          ],
+          vc: [
+            { icon:'✓', text:'3 alvos mostram sinais de maturidade organizacional — prontos para Série A.' },
+            { icon:'⚠', text:'Alertas de risco de remuneração em 4 de 14 alvos — revisar antes do term sheet.' },
+            { icon:'!', text:'Apenas 2 de 14 relatórios de DD estão completos. 12 ainda em andamento.' },
+          ],
+          startup: [
+            { icon:'✓', text:'A maioria dos seus salários é competitiva — 7 de 12 cargos estão na ou acima da mediana.' },
+            { icon:'⚠', text:'Sua equipe de Finanças é menor do que empresas similares — considere contratar.' },
+            { icon:'!', text:'2 engenheiros estão sendo pagos abaixo do mercado — aumenta o risco de saída.' },
+          ],
+        },
+        marketTitle: 'Mercado LATAM esta semana',
+        market: [
+          { t:'Argentina: faixas FE Sênior +8% (ajuste cambial)', s:'Fintech · AR · 30d' },
+          { t:'Brasil: 2 fintechs Série B contrataram Head of Data', s:'Grupo São Paulo' },
+          { t:'México: pacotes de equity para CFO movidos para 0.5–1.2%', s:'Série A multissetor' },
+          { t:'Regional: ratio Eng:PM se estreitando para 8.2:1', s:'Fintech LATAM' },
+        ],
+        compTitle: 'Explorador de remuneração',
+        peerSet: 'Grupo de pares: Fintech · Série A · 40–120 FTE · últimos 90 dias',
+        filterFn: 'Função', filterLevel: 'Nível', filterCountry: 'País',
+        cols: { role:'Cargo', fn:'Função', level:'Nível', band:'Faixa' },
+        fxLoading: 'Carregando taxa de câmbio…', fxUnavail: 'Taxa de câmbio indisponível',
+        fxUpdated: 'Atualizado', fxDaily: 'taxas atualizadas diariamente',
+        periodSuffix: { monthly:'/mês', annual:'/ano' },
+        periodLabel: { monthly:'USD/mês', annual:'USD/ano' },
+        backExplorer: '← Explorador', dataPoints: 'pontos de dados',
+        peerCompanies: 'empresas parceiras', updatedAgo: 'atualizado há 3 dias',
+        distribution: 'Distribuição', pkgComp: 'Composição do pacote',
+        peersInCohort: 'Empresas do grupo', yourOffer: 'Sua oferta',
+        aboveP50: 'acima do P50', belowP50: 'abaixo do P50',
+        pkg: ['Base','Variável','Equity','Benefícios'],
+        bandsTitle: 'Construtor de faixas', bandsSub: 'Ancore ao mercado, ajuste o intervalo, publique uma política',
+        bandsRole: 'Cargo', bandsAnchor: 'Âncora', bandsSpread: 'Intervalo',
+        bandsMin: 'Mín', bandsMid: 'Med', bandsMax: 'Máx',
+        bandsExport: 'Exportar política', bandsPreview: 'Pré-visualização',
+        marketP25: 'Mercado P25', marketP75: 'Mercado P75',
+        orgTitle: 'Estrutura organizacional',
+        orgSub: 'pessoas · 47 pares em Fintech · Série A · LATAM',
+        hcByFn: 'Headcount por função', hcLegend: 'Barra: você · Faixa: benchmark P25–P75',
+        nextHires: 'Próximas contratações sugeridas', addBtn: 'Adicionar',
+        hires: [
+          { role:'Senior Data Scientist', reason:'Data no P25. Pares adicionam 1.6 antes da Série B.', when:'Q2 2026', cost:'$6.8k' },
+          { role:'Lead Product Manager',  reason:'Eng:PM = 12:1 vs grupo 10:1.',                       when:'Q2 2026', cost:'$8.7k' },
+          { role:'Head of Data',          reason:'78% dos pares de Série B têm esse cargo.',            when:'Q3 2026', cost:'$11.2k' },
+        ],
+        stepOf: 'Passo', stepOf2: 'de 3',
+        steps: { 1:'Enviar arquivo de headcount', 2:'Confirmar mapeamento de cargos', 3:'Revisar contrato de dados' },
+        stepSubs: {
+          1:'CSV, Excel ou conecte seu HRIS. Criptografado localmente antes de sair do navegador.',
+          2:'Mapeamos 62/62. Revise 2 alertas abaixo.',
+          3:'O que o Pulso vai e não vai fazer com seus dados.',
+        },
+        dropFile: 'Arraste o arquivo aqui ou clique para buscar',
+        fileReady: 'Criptografado localmente · pronto para processar',
+        fileConnect: 'CSV, XLSX, ou conecte BambooHR / Rippling / Gusto',
+        cancelBtn: 'Cancelar', continueBtn: 'Continuar →', backBtn: 'Voltar', signBtn: 'Assinar e contribuir →',
+        submissionTitle: 'Envio recebido',
+        submissionSub: '62 registros na fila. Integrados ao seu grupo em 24h. Filtros avançados e relatórios de tendência desbloqueados.',
+        openExplorer: 'Abrir explorador →', backHome: 'Voltar ao início',
+        mappingCols: ['Seu título','Canônico Pulso','Pessoas','Correspondência'],
+        contract: [
+          { t:'Mínimo de agregação', d:'Seus dados aparecem em grupos de 8+ pares.' },
+          { t:'Criptografia', d:'Nomes e IDs criptografados com SHA-256 no cliente.' },
+          { t:'Propriedade dos dados', d:'Exclua sua contribuição do seu perfil a qualquer momento.' },
+          { t:'Sem revenda', d:'Não vendemos dados no nível de linha.' },
+        ],
+        settingsTitle: 'Perfil da empresa', editBtn: 'Editar',
+        settingsFields: [
+          {k:'Nome',v:'Nuvelo'},{k:'Setor',v:'Fintech'},
+          {k:'Estágio',v:'Series D · 2024 · USD 300M'},{k:'Sede',v:'Buenos Aires, Argentina'},
+          {k:'Headcount',v:'62 · 7 vagas abertas'},{k:'Grupo',v:'Fintech · Series D · LATAM · 40–120 FTE'},
+        ],
+        insightsTitle: 'Inteligência estrutural',
+        insightsSub: 'Como sua estratégia de remuneração impacta a saúde organizacional',
+        recommendation: 'Recomendação:',
+      },
+    };
+
     function pulsoScatter(p25, p50, p75, n, seed) {
       const points = [];
       const rng = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
@@ -156,17 +407,18 @@
       );
     }
 
-    function Sidebar({ nav, setNav, showOrg }) {
+    function Sidebar({ nav, setNav, showOrg, lang }) {
+      const t = STRINGS[lang];
       const items = [
-        { id: 'home',       label: 'Home',         icon: '▢' },
-        { id: 'insights',   label: 'Insights',     icon: '◆', section: 'Intelligence' },
-        { id: 'comp',       label: 'Compensation',  icon: '◈', section: 'PulsoComp' },
-        { id: 'role',       label: 'Role detail',   icon: '·', indent: true },
-        { id: 'bands',      label: 'Bands',         icon: '·', indent: true },
-        showOrg && { id: 'org',    label: 'Structure', icon: '◇', section: 'PulsoOrg' },
-        showOrg && { id: 'ratios', label: 'Ratios',    icon: '·', indent: true },
-        { id: 'contribute', label: 'Contribute',    icon: '↑', section: 'Data' },
-        { id: 'settings',   label: 'Settings',      icon: '⚙' },
+        { id: 'home',       label: t.nav.home,         icon: '▢' },
+        { id: 'insights',   label: t.nav.insights,     icon: '◆', section: t.sec.intelligence },
+        { id: 'comp',       label: t.nav.comp,          icon: '◈', section: t.sec.pulsocomp },
+        { id: 'role',       label: t.nav.role,          icon: '·', indent: true },
+        { id: 'bands',      label: t.nav.bands,         icon: '·', indent: true },
+        showOrg && { id: 'org',    label: t.nav.org,    icon: '◇', section: t.sec.pulsoorg },
+        showOrg && { id: 'ratios', label: t.nav.ratios, icon: '·', indent: true },
+        { id: 'contribute', label: t.nav.contribute,    icon: '↑', section: t.sec.data },
+        { id: 'settings',   label: t.nav.settings,      icon: '⚙' },
       ].filter(Boolean);
 
       return (
@@ -199,7 +451,7 @@
           <div style={{ flex: 1 }} />
           <div style={{ padding: 12, background: S.bg, borderRadius: 8, fontSize: 12, color: S.inkSoft }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ fontWeight: 500, color: S.ink }}>Data coverage</span>
+              <span style={{ fontWeight: 500, color: S.ink }}>{t.coverage}</span>
               <span style={{ color: S.good, fontWeight: 500 }}>94%</span>
             </div>
             <div style={{ height: 4, background: S.line, borderRadius: 2, overflow: 'hidden' }}>
@@ -210,7 +462,8 @@
       );
     }
 
-    function SearchModal({ open, onClose, setNav, setSelectedRoleId, period }) {
+    function SearchModal({ open, onClose, setNav, setSelectedRoleId, period, lang }) {
+      const t = STRINGS[lang];
       const [q, setQ] = React.useState('');
       const [sel, setSel] = React.useState(-1);
       const inputRef = React.useRef(null);
@@ -277,7 +530,7 @@
                 value={q}
                 onChange={e => setQ(e.target.value)}
                 onKeyDown={handleKey}
-                placeholder="Search roles, bands, peers…"
+                placeholder={t.searchPh + '…'}
                 style={{ flex: 1, border: 'none', outline: 'none', fontSize: '0.95rem', fontFamily: S.font, color: S.ink, background: 'transparent' }}
               />
               <span onClick={onClose} style={{ fontSize: '0.7rem', fontWeight: 600, background: '#f1f2f4', border: `1px solid ${S.line}`, borderRadius: 5, padding: '2px 8px', color: S.inkMuted, cursor: 'pointer' }}>ESC</span>
@@ -286,12 +539,12 @@
             <div style={{ maxHeight: 380, overflowY: 'auto', padding: '6px 0 10px' }}>
               {results.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '36px 20px', color: S.inkMuted, fontSize: 13 }}>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: S.ink, marginBottom: 6 }}>Sin resultados para "{q}"</div>
-                  Probá: "Engineer", "Product", "Fintech"
+                  <div style={{ fontSize: 15, fontWeight: 600, color: S.ink, marginBottom: 6 }}>{t.noResults} "{q}"</div>
+                  {t.trySearch}
                 </div>
               )}
               {results.length > 0 && !q && (
-                <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: S.inkFaint, padding: '10px 18px 4px' }}>Sugerencias</div>
+                <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: S.inkFaint, padding: '10px 18px 4px' }}>{t.suggestions}</div>
               )}
               {results.map((item, i) => {
                 const bc = badgeColor[item.badge] || { bg: '#f3f4f6', c: S.inkMuted };
@@ -314,7 +567,7 @@
             </div>
 
             <div style={{ borderTop: `1px solid ${S.line}`, padding: '9px 18px', display: 'flex', gap: 14 }}>
-              {[['↑↓','navegar'],['↵','abrir'],['ESC','cerrar']].map(([k,l]) => (
+              {t.hints.map(([k,l]) => (
                 <span key={k} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.7rem', color: S.inkFaint }}>
                   <kbd style={{ background: '#f1f2f4', border: `1px solid ${S.line}`, borderRadius: 4, padding: '1px 5px', fontFamily: S.font, fontSize: '0.68rem' }}>{k}</kbd>{l}
                 </span>
@@ -325,7 +578,8 @@
       );
     }
 
-    function PeriodToggle({ period, setPeriod }) {
+    function PeriodToggle({ period, setPeriod, lang }) {
+      const t = STRINGS[lang];
       return (
         <div style={{ display: 'flex', background: S.lineSoft, borderRadius: 7, padding: 3, gap: 2 }}>
           {['monthly', 'annual'].map(p => (
@@ -337,13 +591,14 @@
               boxShadow: period === p ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
               transition: 'all 0.15s',
               textTransform: 'capitalize',
-            }}>{p}</button>
+            }}>{t.periods[p]}</button>
           ))}
         </div>
       );
     }
 
-    function Topbar({ onSearch, period, setPeriod, userRole, setUserRole }) {
+    function Topbar({ onSearch, period, setPeriod, userRole, setUserRole, lang, setLang }) {
+      const t = STRINGS[lang];
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 24px', borderBottom: `1px solid ${S.line}`, background: S.surface }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -356,9 +611,9 @@
                 background: S.surface, color: S.ink, cursor: 'pointer',
               }}
             >
-              <option value="startup">🚀 Startup view</option>
-              <option value="accelerator">🏢 Accelerator view</option>
-              <option value="vc">💼 Fund view</option>
+              <option value="startup">🚀 {t.views.startup}</option>
+              <option value="accelerator">🏢 {t.views.accelerator}</option>
+              <option value="vc">💼 {t.views.vc}</option>
             </select>
 
             {userRole === 'startup' && (<>
@@ -370,17 +625,29 @@
             {userRole === 'accelerator' && (<>
               <div style={{ width: 22, height: 22, borderRadius: 5, background: '#FF6B35', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>F</div>
               <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Fortia</span>
-              <span style={{ fontSize: 11, padding: '2px 7px', background: '#FFF4EC', color: '#C2410C', borderRadius: 4, fontWeight: 500 }}>28 portfolio cos.</span>
+              <span style={{ fontSize: 11, padding: '2px 7px', background: '#FFF4EC', color: '#C2410C', borderRadius: 4, fontWeight: 500 }}>{t.chips.portfolio}</span>
             </>)}
 
             {userRole === 'vc' && (<>
               <div style={{ width: 22, height: 22, borderRadius: 5, background: '#7C3AED', color: '#fff', display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 600 }}>O</div>
               <span style={{ fontSize: 13, fontWeight: 500, color: S.ink }}>Orion Capital</span>
-              <span style={{ fontSize: 11, padding: '2px 7px', background: '#F5F3FF', color: '#7C3AED', borderRadius: 4, fontWeight: 500 }}>Due diligence mode</span>
+              <span style={{ fontSize: 11, padding: '2px 7px', background: '#F5F3FF', color: '#7C3AED', borderRadius: 4, fontWeight: 500 }}>{t.chips.dd}</span>
             </>)}
           </div>
           <div style={{ flex: 1 }} />
-          <PeriodToggle period={period} setPeriod={setPeriod} />
+          <PeriodToggle period={period} setPeriod={setPeriod} lang={lang} />
+          <div style={{ display: 'flex', background: S.lineSoft, borderRadius: 7, padding: 3, gap: 2 }}>
+            {[{code:'es',label:'🇦🇷 ES'},{code:'pt',label:'🇧🇷 PT'}].map(l => (
+              <button key={l.code} onClick={() => setLang(l.code)} style={{
+                padding: '4px 10px', borderRadius: 5, border: 'none', cursor: 'pointer',
+                fontSize: 11, fontWeight: 600, fontFamily: S.font,
+                background: lang === l.code ? S.surface : 'transparent',
+                color: lang === l.code ? S.ink : S.inkMuted,
+                boxShadow: lang === l.code ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.15s',
+              }}>{l.label}</button>
+            ))}
+          </div>
           <div onClick={onSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', border: `1px solid ${S.line}`, borderRadius: 7, fontSize: 12, color: S.inkMuted, width: 240, cursor: 'pointer', transition: 'border-color 0.15s' }}
             onMouseEnter={e => e.currentTarget.style.borderColor = S.accent}
             onMouseLeave={e => e.currentTarget.style.borderColor = S.line}
@@ -389,87 +656,47 @@
             <span>Search roles, bands, peers</span>
             <span style={{ marginLeft: 'auto', fontFamily: S.mono, fontSize: 10 }}>⌘K</span>
           </div>
-          <button style={{ padding: '7px 12px', background: S.ink, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>Contribute data</button>
+          <button style={{ padding: '7px 12px', background: S.ink, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>{t.contributeBtn}</button>
         </div>
       );
     }
 
-    function Home({ setNav, showOrg, period, userRole }) {
-      const greeting = userRole === 'accelerator' ? 'Good morning, Fortia'
-        : userRole === 'vc' ? 'Good morning, Orion'
-        : 'Good morning, Carolina';
-
-      const subline = userRole === 'accelerator'
-        ? '28 portfolio companies · 8 countries · last updated today'
-        : userRole === 'vc'
-        ? '14 active targets · LATAM fintech · due diligence mode'
-        : 'Peer set: 284 LATAM fintechs · Series A · last updated today';
-
+    function Home({ setNav, showOrg, period, userRole, lang }) {
+      const t = STRINGS[lang];
       const products = [
         {
           id: 'comp', nav: 'comp',
           color: '#0ABFCF', colorSoft: '#e0f9fb', icon: '◈', name: 'PulsoComp',
-          headline: userRole === 'startup' ? 'Are you paying fairly?'
-            : userRole === 'accelerator' ? 'Portfolio compensation tracker'
-            : 'Compensation due diligence',
-          desc: userRole === 'startup'
-            ? 'Compare your salaries against 284 LATAM tech companies at the same stage and size.'
-            : userRole === 'accelerator'
-            ? 'Track compensation health across all 28 portfolio companies in one place.'
-            : 'Benchmark target companies against LATAM market data before you invest.',
-          badge: userRole === 'startup' ? '7 of 12 roles above market median'
-            : userRole === 'accelerator' ? '3 companies need salary review'
-            : '6 compensation risk flags found',
+          headline: t.compCard.headlines[userRole],
+          desc: t.compCard.descs[userRole],
+          badge: t.compCard.badges[userRole],
           badgeTone: userRole === 'startup' ? S.good : S.bad,
-          cta: 'Explore salaries →',
+          cta: t.compCard.cta,
         },
         showOrg && {
           id: 'org', nav: 'org',
           color: S.accent, colorSoft: S.accentSoft, icon: '◇', name: 'PulsoOrg',
-          headline: userRole === 'startup' ? 'Is your team built right?'
-            : userRole === 'accelerator' ? 'Portfolio org health'
-            : 'Org structure analysis',
-          desc: userRole === 'startup'
-            ? 'See how your team structure compares to similar startups — and where to hire next.'
-            : userRole === 'accelerator'
-            ? 'Compare org structures across portfolio companies and identify scaling risks early.'
-            : 'Evaluate org maturity and team composition before closing a deal.',
-          badge: userRole === 'startup' ? '8 of 9 functions healthy'
-            : userRole === 'accelerator' ? 'Avg. org health score 7.8/10'
-            : '2 of 14 targets are Series B ready',
+          headline: t.orgCard.headlines[userRole],
+          desc: t.orgCard.descs[userRole],
+          badge: t.orgCard.badges[userRole],
           badgeTone: userRole === 'startup' ? S.good : S.watch,
-          cta: 'Explore structure →',
+          cta: t.orgCard.cta,
         },
       ].filter(Boolean);
 
-      const findings = userRole === 'accelerator'
-        ? [
-            { icon: '✓', tone: S.good,  bg: `${S.good}12`,  text: 'All 28 portfolio companies are actively tracked and up to date.' },
-            { icon: '⚠', tone: S.watch, bg: `${S.watch}12`, text: 'Average comp growth is +12% vs. Q4 — within healthy range for the cohort.' },
-            { icon: '!', tone: S.bad,   bg: `${S.bad}12`,   text: '3 companies are paying below market — they may struggle to retain key talent.' },
-          ]
-        : userRole === 'vc'
-        ? [
-            { icon: '✓', tone: S.good,  bg: `${S.good}12`,  text: '3 targets are showing strong org maturity signals — Series A ready.' },
-            { icon: '⚠', tone: S.watch, bg: `${S.watch}12`, text: 'Compensation risk flags found in 4 of 14 targets — worth reviewing before term sheet.' },
-            { icon: '!', tone: S.bad,   bg: `${S.bad}12`,   text: 'Only 2 of 14 DD reports are complete. 12 still in progress.' },
-          ]
-        : [
-            { icon: '✓', tone: S.good,  bg: `${S.good}12`,  text: 'Most of your salaries are competitive — 7 of 12 roles are at or above the market midpoint.' },
-            { icon: '⚠', tone: S.watch, bg: `${S.watch}12`, text: 'Your Finance team is smaller than similar companies at your stage — consider hiring.' },
-            { icon: '!', tone: S.bad,   bg: `${S.bad}12`,   text: '2 engineers are being paid below market — this increases the risk of them leaving.' },
-          ];
+      const tones = [S.good, S.watch, S.bad];
+      const findings = t.findings[userRole].map((f, i) => ({ ...f, tone: tones[i], bg: `${tones[i]}12` }));
 
       return (
         <div style={{ padding: '28px 28px 60px', maxWidth: 860 }}>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
             <div>
-              <div style={{ fontSize: 24, fontWeight: 700, color: S.ink, letterSpacing: -0.4 }}>{greeting}</div>
-              <div style={{ fontSize: 13, color: S.inkMuted, marginTop: 4 }}>{subline}</div>
+              <div style={{ fontSize: 24, fontWeight: 700, color: S.ink, letterSpacing: -0.4 }}>{t.greetings[userRole]}</div>
+              <div style={{ fontSize: 13, color: S.inkMuted, marginTop: 4 }}>{t.sublines[userRole]}</div>
             </div>
             <button onClick={() => setNav('insights')} style={{ padding: '8px 14px', background: S.accent, color: '#fff', border: 'none', borderRadius: 7, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>
-              View insights →
+              {t.viewInsights}
             </button>
           </div>
 
@@ -498,7 +725,7 @@
           </div>
 
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: S.inkMuted, textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 10 }}>Key findings</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: S.inkMuted, textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 10 }}>{t.findingsTitle}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
               {findings.map((f, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 11, padding: '11px 14px', background: f.bg, borderRadius: 8 }}>
@@ -512,14 +739,9 @@
           </div>
 
           <div style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 10, overflow: 'hidden' }}>
-            <div style={{ padding: '11px 16px', borderBottom: `1px solid ${S.line}`, fontSize: 12, fontWeight: 600, color: S.ink }}>LATAM market this week</div>
+            <div style={{ padding: '11px 16px', borderBottom: `1px solid ${S.line}`, fontSize: 12, fontWeight: 600, color: S.ink }}>{t.marketTitle}</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-              {[
-                { t: 'Argentina: Senior FE bands +8% (currency adjust.)',  s: 'Fintech · AR · 30d'    },
-                { t: 'Brazil: 2 Series B fintechs added Head of Data',     s: 'São Paulo cohort'      },
-                { t: 'Mexico: CFO equity packages moved to 0.5–1.2%',      s: 'Series A cross-sector' },
-                { t: 'Regional: Eng:PM ratio tightening to 8.2:1',         s: 'Fintech LATAM'         },
-              ].map((x, i) => (
+              {t.market.map((x, i) => (
                 <div key={i} style={{ padding: '10px 16px', borderBottom: i < 2 ? `1px solid ${S.lineSoft}` : 'none', borderRight: i % 2 === 0 ? `1px solid ${S.lineSoft}` : 'none' }}>
                   <div style={{ fontSize: 12, color: S.ink, lineHeight: 1.4 }}>{x.t}</div>
                   <div style={{ fontSize: 11, color: S.inkMuted, marginTop: 2 }}>{x.s}</div>
@@ -558,7 +780,8 @@
       );
     }
 
-    function Comp({ setNav, setSelectedRoleId, filters, setFilters, period }) {
+    function Comp({ setNav, setSelectedRoleId, filters, setFilters, period, lang }) {
+      const t = STRINGS[lang];
       const [fxRates, setFxRates] = useState(null);
       const [fxUpdated, setFxUpdated] = useState(null);
       useEffect(() => {
@@ -578,14 +801,14 @@
       }), [filters]);
       const cm = { AR:1, BR:1.06, MX:1.03, CO:0.9, CL:0.98, UY:0.95 }[filters.country] || 1;
       const pm = period === 'annual' ? 12 : 1;
-      const periodLabel = period === 'annual' ? 'USD/yr' : 'USD/mo';
+      const periodLabel = t.periodLabel[period];
       const CURR = { AR: 'ARS', BR: 'BRL', MX: 'MXN', CO: 'COP', CL: 'CLP', UY: 'UYU' };
       const fxCode = CURR[filters.country];
       const fxRate = fxRates?.[fxCode];
       const fxLabel = fxRate
         ? `1 USD = ${Math.round(fxRate).toLocaleString()} ${fxCode}`
-        : fxRates ? 'Rate unavailable' : 'Loading rate…';
-      const fxTime = fxUpdated ? `Updated ${fxUpdated}` : 'rates updated daily';
+        : fxRates ? t.fxUnavail : t.fxLoading;
+      const fxTime = fxUpdated ? `${t.fxUpdated} ${fxUpdated}` : t.fxDaily;
       const [currency, setCurrency] = useState('USD');
       const fxMult = currency === 'local' ? (fxRate || 1) : 1;
       const currSymbol = currency === 'local' ? fxCode : 'USD';
@@ -593,24 +816,24 @@
       return (
         <div style={{ padding: '24px 28px 60px' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
-            <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>Compensation explorer</div>
+            <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>{t.compTitle}</div>
             <div style={{ fontSize: 12, color: S.inkMuted }}>{rows.length} roles · base {periodLabel} · {PULSO_COUNTRIES.find(c => c.code === filters.country)?.name}</div>
           </div>
-          <div style={{ fontSize: 13, color: S.inkMuted, marginBottom: 20 }}>Peer set: Fintech · Series A · 40–120 FTE · last 90 days</div>
+          <div style={{ fontSize: 13, color: S.inkMuted, marginBottom: 20 }}>{t.peerSet}</div>
 
           <div style={{ display: 'flex', gap: 18, padding: '12px 14px', background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, marginBottom: 14, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>Function</span>
+              <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>{t.filterFn}</span>
               {fns.map(f => <Chip key={f} active={filters.fn === f} onClick={() => setFilters({...filters, fn: f})}>{f}</Chip>)}
             </div>
             <div style={{ width: 1, background: S.line }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>Level</span>
+              <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>{t.filterLevel}</span>
               {['All','Junior','Mid','Senior','Staff','Manager','Head','Executive'].map(l => <Chip key={l} active={filters.level === l} onClick={() => setFilters({...filters, level: l})}>{l}</Chip>)}
             </div>
             <div style={{ width: 1, background: S.line }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>Country</span>
+              <span style={{ fontSize: 11, fontWeight: 500, color: S.inkMuted }}>{t.filterCountry}</span>
               {PULSO_COUNTRIES.map(c => <Chip key={c.code} active={filters.country === c.code} onClick={() => setFilters({...filters, country: c.code})}>{c.flag} {c.code}</Chip>)}
             </div>
           </div>
@@ -639,9 +862,9 @@
 
           <div style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 0.8fr 0.9fr 0.9fr 0.9fr 1.8fr 0.6fr', padding: '10px 16px', background: S.bg, fontSize: 11, fontWeight: 600, color: S.inkMuted, textTransform: 'uppercase', letterSpacing: 0.4, borderBottom: `1px solid ${S.line}` }}>
-              <div>Role</div><div>Function</div><div>Level</div>
+              <div>{t.cols.role}</div><div>{t.cols.fn}</div><div>{t.cols.level}</div>
               <div style={{textAlign:'right'}}>P25 ({currSymbol})</div><div style={{textAlign:'right'}}>P50 ({currSymbol})</div><div style={{textAlign:'right'}}>P75 ({currSymbol})</div>
-              <div>Band</div><div style={{textAlign:'right'}}>n</div>
+              <div>{t.cols.band}</div><div style={{textAlign:'right'}}>n</div>
             </div>
             {rows.map(r => <Row key={r.id} r={r} cm={cm} pm={pm} fx={fxMult} currSymbol={currSymbol} onOpen={() => { setSelectedRoleId(r.id); setNav('role'); }} />)}
           </div>
@@ -649,10 +872,11 @@
       );
     }
 
-    function RoleDetail({ setNav, selectedRoleId, period }) {
+    function RoleDetail({ setNav, selectedRoleId, period, lang }) {
+      const t = STRINGS[lang];
       const r = PULSO_ROLES.find(x => x.id === selectedRoleId) || PULSO_ROLES[2];
       const pm = period === 'annual' ? 12 : 1;
-      const periodSuffix = period === 'annual' ? '/yr' : '/mo';
+      const periodSuffix = t.periodSuffix[period];
       const scatter = useMemo(() => pulsoScatter(r.p25, r.p50, r.p75, r.n, r.id.length), [r]);
       const max = Math.max(...scatter, r.p75*1.3), min = Math.min(...scatter, r.p25*0.7);
       const BINS = 18;
@@ -665,25 +889,25 @@
       const mine = 5400;
       const minePct = Math.round((mine - r.p50) / r.p50 * 100);
       const mineAbove = minePct >= 0;
-      const mineDelta = `${Math.abs(minePct)}% ${mineAbove ? 'above' : 'below'} P50`;
+      const mineDelta = `${Math.abs(minePct)}% ${mineAbove ? t.aboveP50 : t.belowP50}`;
       const mineTone = mineAbove ? 'good' : 'bad';
 
       return (
         <div style={{ padding: '24px 28px 60px' }}>
-          <button onClick={() => setNav('comp')} style={{ background:'transparent', border:'none', fontSize:12, color:S.inkMuted, cursor:'pointer', padding:0, marginBottom:10 }}>← Explorer</button>
+          <button onClick={() => setNav('comp')} style={{ background:'transparent', border:'none', fontSize:12, color:S.inkMuted, cursor:'pointer', padding:0, marginBottom:10 }}>{t.backExplorer}</button>
           <div style={{ display:'flex', alignItems:'baseline', gap:10, marginBottom:3 }}>
             <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3 }}>{r.role}</div>
             <span style={{ fontSize:11, padding:'2px 7px', background:S.chipBg, color:S.inkSoft, borderRadius:4, fontWeight:500 }}>{r.level}</span>
             <span style={{ fontSize:11, padding:'2px 7px', background:S.accentSoft, color:S.accent, borderRadius:4, fontWeight:500 }}>{r.fn}</span>
           </div>
-          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>{r.n} data points · {PULSO_PEERS.length*6} peer companies · updated 3d ago</div>
+          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>{r.n} {t.dataPoints} · {PULSO_PEERS.length*6} {t.peerCompanies} · {t.updatedAgo}</div>
 
           <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:14, marginBottom:22 }}>
             {[
               { label:`P25 ${periodSuffix}`,          value:`$${Math.round(r.p25*pm).toLocaleString()}` },
               { label:`Median (P50) ${periodSuffix}`, value:`$${Math.round(r.p50*pm).toLocaleString()}` },
               { label:`P75 ${periodSuffix}`,          value:`$${Math.round(r.p75*pm).toLocaleString()}` },
-              { label:'Your offer',                   value:`$${Math.round(mine*pm).toLocaleString()}`, delta: mineDelta, tone: mineTone },
+              { label:t.yourOffer,                     value:`$${Math.round(mine*pm).toLocaleString()}`, delta: mineDelta, tone: mineTone },
             ].map((s,i) => (
               <div key={i} style={{ padding:16, background:S.surface, border:`1px solid ${i===3?(mineAbove?S.good:S.bad):S.line}`, borderRadius:8 }}>
                 <Stat {...s} />
@@ -692,7 +916,7 @@
           </div>
 
           <div style={{ padding:22, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
-            <div style={{ fontSize:14, fontWeight:600, color:S.ink, marginBottom:14 }}>Distribution</div>
+            <div style={{ fontSize:14, fontWeight:600, color:S.ink, marginBottom:14 }}>{t.distribution}</div>
             <div style={{ display:'flex', alignItems:'flex-end', gap:3, height:110, marginBottom:6 }}>
               {hist.map((h,i) => {
                 const v = (i/BINS)*(max-min)+min;
@@ -717,20 +941,20 @@
 
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginTop:20 }}>
             <div style={{ padding:18, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
-              <div style={{ fontSize:14, fontWeight:600, color:S.ink, marginBottom:12 }}>Package composition</div>
-              {[['Base',78,`$${Math.round(r.p50*pm).toLocaleString()}`],['Variable',12,`$${Math.round(732*pm).toLocaleString()}`],['Equity',7,`$${Math.round(427*pm).toLocaleString()}`],['Benefits',3,`$${Math.round(183*pm).toLocaleString()}`]].map(([l,p,v],i) => (
+              <div style={{ fontSize:14, fontWeight:600, color:S.ink, marginBottom:12 }}>{t.pkgComp}</div>
+              {t.pkg.map((l,i) => { const [pct,val] = [[78,r.p50],[12,732],[7,427],[3,183]][i]; const v = `$${Math.round(val*pm).toLocaleString()}`; return (
                 <div key={i} style={{ display:'grid', gridTemplateColumns:'80px 1fr 50px 70px', gap:12, alignItems:'center', padding:'8px 0', borderBottom:i<3?`1px solid ${S.lineSoft}`:'none' }}>
                   <div style={{ fontSize:12, color:S.ink, fontWeight:500 }}>{l}</div>
                   <div style={{ height:6, background:S.lineSoft, borderRadius:3, overflow:'hidden' }}>
-                    <div style={{ height:6, width:`${p}%`, background:S.accent }} />
+                    <div style={{ height:6, width:`${pct}%`, background:S.accent }} />
                   </div>
-                  <div style={{ fontFamily:S.mono, fontSize:11, color:S.inkMuted, textAlign:'right' }}>{p}%</div>
+                  <div style={{ fontFamily:S.mono, fontSize:11, color:S.inkMuted, textAlign:'right' }}>{pct}%</div>
                   <div style={{ fontFamily:S.mono, fontSize:11, color:S.ink, textAlign:'right' }}>{v}</div>
                 </div>
-              ))}
+              ); })}
             </div>
             <div style={{ padding:18, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
-              <div style={{ fontSize:14, fontWeight:600, color:S.ink, marginBottom:12 }}>Peers in cohort</div>
+              <div style={{ fontSize:14, fontWeight:600, color:S.ink, marginBottom:12 }}>{t.peersInCohort}</div>
               {PULSO_PEERS.map((p,i) => (
                 <div key={p.id} style={{ display:'grid', gridTemplateColumns:'28px 1fr auto', gap:10, padding:'8px 0', borderBottom:i<5?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
                   <div style={{ width:22, height:22, borderRadius:5, background:S.chipBg, color:S.inkSoft, display:'grid', placeItems:'center', fontSize:10, fontWeight:600 }}>{p.id}</div>
@@ -747,38 +971,39 @@
       );
     }
 
-    function Bands({ period }) {
+    function Bands({ period, lang }) {
+      const t = STRINGS[lang];
       const [anchor, setAnchor] = useState(50);
       const [spread, setSpread] = useState(30);
       const [selRole, setSelRole] = useState(PULSO_ROLES[2]);
       const pm = period === 'annual' ? 12 : 1;
-      const periodSuffix = period === 'annual' ? '/yr' : '/mo';
+      const periodSuffix = t.periodSuffix[period];
       const p25 = Math.round(selRole.p50*(1-spread/200)*(anchor/50)*pm);
       const p50 = Math.round(selRole.p50*(anchor/50)*pm);
       const p75 = Math.round(selRole.p50*(1+spread/200)*(anchor/50)*pm);
       return (
         <div style={{ padding:'24px 28px 60px' }}>
-          <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:4 }}>Band builder</div>
-          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>Anchor to the market, tune spread, ship a policy</div>
+          <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:4 }}>{t.bandsTitle}</div>
+          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>{t.bandsSub}</div>
           <div style={{ display:'grid', gridTemplateColumns:'300px 1fr', gap:16 }}>
             <aside style={{ padding:18, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, height:'fit-content' }}>
-              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>Role</div>
+              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>{t.bandsRole}</div>
               <select value={selRole.id} onChange={e => setSelRole(PULSO_ROLES.find(x=>x.id===e.target.value))} style={{ width:'100%', padding:9, fontSize:13, borderRadius:6, border:`1px solid ${S.line}`, marginBottom:18, background:S.surface, color:S.ink }}>
                 {PULSO_ROLES.map(x => <option key={x.id} value={x.id}>{x.role} · {x.level}</option>)}
               </select>
-              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>Anchor <span style={{color:S.ink,marginLeft:4}}>P{anchor}</span> <span style={{color:S.inkFaint,fontWeight:400}}>({periodSuffix})</span></div>
+              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>{t.bandsAnchor} <span style={{color:S.ink,marginLeft:4}}>P{anchor}</span> <span style={{color:S.inkFaint,fontWeight:400}}>({periodSuffix})</span></div>
               <input type="range" min="25" max="75" value={anchor} onChange={e=>setAnchor(+e.target.value)} style={{ width:'100%', accentColor:S.accent, marginBottom:18 }} />
-              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>Spread <span style={{color:S.ink,marginLeft:4}}>±{Math.round(spread/2)}%</span></div>
+              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:6 }}>{t.bandsSpread} <span style={{color:S.ink,marginLeft:4}}>±{Math.round(spread/2)}%</span></div>
               <input type="range" min="10" max="60" value={spread} onChange={e=>setSpread(+e.target.value)} style={{ width:'100%', accentColor:S.accent, marginBottom:18 }} />
               <div style={{ padding:12, background:S.bg, borderRadius:6, fontFamily:S.mono, fontSize:12, color:S.ink }}>
-                <div style={{ display:'flex', justifyContent:'space-between', padding:'3px 0' }}><span style={{color:S.inkMuted}}>Min</span><span>${p25.toLocaleString()}</span></div>
-                <div style={{ display:'flex', justifyContent:'space-between', padding:'3px 0' }}><span style={{color:S.inkMuted}}>Mid</span><span style={{fontWeight:600}}>${p50.toLocaleString()}</span></div>
-                <div style={{ display:'flex', justifyContent:'space-between', padding:'3px 0' }}><span style={{color:S.inkMuted}}>Max</span><span>${p75.toLocaleString()}</span></div>
+                <div style={{ display:'flex', justifyContent:'space-between', padding:'3px 0' }}><span style={{color:S.inkMuted}}>{t.bandsMin}</span><span>${p25.toLocaleString()}</span></div>
+                <div style={{ display:'flex', justifyContent:'space-between', padding:'3px 0' }}><span style={{color:S.inkMuted}}>{t.bandsMid}</span><span style={{fontWeight:600}}>${p50.toLocaleString()}</span></div>
+                <div style={{ display:'flex', justifyContent:'space-between', padding:'3px 0' }}><span style={{color:S.inkMuted}}>{t.bandsMax}</span><span>${p75.toLocaleString()}</span></div>
               </div>
-              <button style={{ width:'100%', marginTop:14, padding:'10px 14px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>Export policy</button>
+              <button style={{ width:'100%', marginTop:14, padding:'10px 14px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>{t.bandsExport}</button>
             </aside>
             <div style={{ padding:22, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
-              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:4 }}>Preview</div>
+              <div style={{ fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, marginBottom:4 }}>{t.bandsPreview}</div>
               <div style={{ fontSize:28, fontWeight:600, color:S.ink, letterSpacing:-0.5 }}>${p25.toLocaleString()} – ${p75.toLocaleString()}</div>
               <div style={{ fontSize:12, color:S.inkMuted, marginTop:4 }}>{selRole.role} · {selRole.level} · base {periodSuffix}</div>
               <div style={{ position:'relative', height:50, marginTop:26 }}>
@@ -787,8 +1012,8 @@
                 <div style={{ position:'absolute', top:14, left:`${(p25/(selRole.p75*1.4))*100}%`, width:`${((p75-p25)/(selRole.p75*1.4))*100}%`, height:18, background:S.accent, borderRadius:4 }} />
               </div>
               <div style={{ display:'flex', justifyContent:'space-between', marginTop:8, fontSize:10, fontFamily:S.mono, color:S.inkMuted }}>
-                <span>Market P25 ${Math.round(selRole.p25*pm).toLocaleString()}</span>
-                <span>Market P75 ${Math.round(selRole.p75*pm).toLocaleString()}</span>
+                <span>{t.marketP25} ${Math.round(selRole.p25*pm).toLocaleString()}</span>
+                <span>{t.marketP75} ${Math.round(selRole.p75*pm).toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -796,15 +1021,16 @@
       );
     }
 
-    function Org() {
+    function Org({ lang }) {
+      const t = STRINGS[lang];
       return (
         <div style={{ padding:'24px 28px 60px' }}>
-          <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3 }}>Org structure</div>
-          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>62 people · 47 peers in Fintech · Series A · LATAM</div>
+          <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3 }}>{t.orgTitle}</div>
+          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:20 }}>62 {t.orgSub}</div>
           <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden', marginBottom:18 }}>
             <div style={{ padding:'14px 16px', borderBottom:`1px solid ${S.line}`, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-              <div style={{ fontSize:14, fontWeight:600, color:S.ink }}>Headcount by function</div>
-              <div style={{ fontSize:12, color:S.inkMuted }}>Bar: you · Ring: benchmark P25–P75</div>
+              <div style={{ fontSize:14, fontWeight:600, color:S.ink }}>{t.hcByFn}</div>
+              <div style={{ fontSize:12, color:S.inkMuted }}>{t.hcLegend}</div>
             </div>
             {PULSO_ORG_BENCH.map((x,i) => {
               const max=30, tone=x.health==='low'?S.watch:S.good;
@@ -836,12 +1062,8 @@
             })}
           </div>
           <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
-            <div style={{ padding:'14px 16px', borderBottom:`1px solid ${S.line}`, fontSize:14, fontWeight:600, color:S.ink }}>Suggested next hires</div>
-            {[
-              { role:'Senior Data Scientist', reason:'Data at P25. Peers add 1.6 before Series B.', when:'Q2 2026', cost:'$6.8k' },
-              { role:'Lead Product Manager',  reason:'Eng:PM = 12:1 vs cohort 10:1.',               when:'Q2 2026', cost:'$8.7k' },
-              { role:'Head of Data',           reason:'78% of Series B peers have this role.',       when:'Q3 2026', cost:'$11.2k' },
-            ].map((x,i,a) => (
+            <div style={{ padding:'14px 16px', borderBottom:`1px solid ${S.line}`, fontSize:14, fontWeight:600, color:S.ink }}>{t.nextHires}</div>
+            {t.hires.map((x,i,a) => (
               <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr auto auto auto', gap:14, padding:'14px 16px', borderBottom:i<a.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
                 <div>
                   <div style={{ fontSize:13, color:S.ink, fontWeight:500 }}>{x.role}</div>
@@ -849,7 +1071,7 @@
                 </div>
                 <div style={{ fontSize:12, color:S.inkMuted, fontFamily:S.mono }}>{x.when}</div>
                 <div style={{ fontSize:12, color:S.ink, fontFamily:S.mono, fontWeight:500 }}>{x.cost}/mo</div>
-                <button style={{ padding:'6px 12px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:12, fontWeight:500, cursor:'pointer' }}>Add</button>
+                <button style={{ padding:'6px 12px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:12, fontWeight:500, cursor:'pointer' }}>{t.addBtn}</button>
               </div>
             ))}
           </div>
@@ -857,43 +1079,40 @@
       );
     }
 
-    function Contribute({ setNav }) {
+    function Contribute({ setNav, lang }) {
+      const t = STRINGS[lang];
       const [step, setStep] = useState(1);
       const [uploaded, setUploaded] = useState(false);
       if (step === 4) return (
         <div style={{ padding:'60px 28px', maxWidth:640, margin:'0 auto', textAlign:'center' }}>
           <div style={{ width:48, height:48, borderRadius:24, background:S.accent, color:'#fff', margin:'0 auto 18px', display:'grid', placeItems:'center', fontSize:22 }}>✓</div>
-          <div style={{ fontSize:24, fontWeight:600, color:S.ink, marginBottom:8, letterSpacing:-0.3 }}>Submission received</div>
-          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:26, lineHeight:1.5 }}>62 records queued. Merged into your cohort in 24h. Deep filters and trend reports are unlocked.</div>
+          <div style={{ fontSize:24, fontWeight:600, color:S.ink, marginBottom:8, letterSpacing:-0.3 }}>{t.submissionTitle}</div>
+          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:26, lineHeight:1.5 }}>{t.submissionSub}</div>
           <div style={{ display:'flex', gap:8, justifyContent:'center' }}>
-            <button onClick={()=>setNav('comp')} style={{ padding:'10px 16px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>Open explorer →</button>
-            <button onClick={()=>setNav('home')} style={{ padding:'10px 16px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>Back to home</button>
+            <button onClick={()=>setNav('comp')} style={{ padding:'10px 16px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>{t.openExplorer}</button>
+            <button onClick={()=>setNav('home')} style={{ padding:'10px 16px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>{t.backHome}</button>
           </div>
         </div>
       );
       return (
         <div style={{ padding:'24px 28px 60px', maxWidth:820 }}>
-          <div style={{ fontSize:11, color:S.inkMuted, marginBottom:4 }}>Step {step} of 3</div>
+          <div style={{ fontSize:11, color:S.inkMuted, marginBottom:4 }}>{t.stepOf} {step} {t.stepOf2}</div>
           <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:4 }}>
-            {step===1&&'Upload headcount file'}{step===2&&'Confirm role mapping'}{step===3&&'Review data contract'}
+            {t.steps[step]}
           </div>
-          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:18 }}>
-            {step===1&&'CSV, Excel, or connect your HRIS. Hashed locally before leaving your browser.'}
-            {step===2&&'We matched 62/62. Review 2 flags below.'}
-            {step===3&&"What Pulso will and won't do with your data."}
-          </div>
+          <div style={{ fontSize:13, color:S.inkMuted, marginBottom:18 }}>{t.stepSubs[step]}</div>
           <div style={{ display:'flex', gap:6, marginBottom:22 }}>
             {[1,2,3].map(s=><div key={s} style={{ flex:1, height:3, borderRadius:2, background:s<=step?S.accent:S.lineSoft }} />)}
           </div>
           {step===1&&(
             <div>
               <div onClick={()=>setUploaded(true)} style={{ padding:36, background:S.surface, border:`2px dashed ${uploaded?S.good:S.line}`, borderRadius:10, textAlign:'center', cursor:'pointer' }}>
-                <div style={{ fontSize:16, fontWeight:600, color:S.ink }}>{uploaded?'headcount_q2_2026.csv · 62 rows':'Drop file here or click to browse'}</div>
-                <div style={{ fontSize:12, color:S.inkMuted, marginTop:4 }}>{uploaded?'Hashed locally · ready to process':'CSV, XLSX, or connect BambooHR / Rippling / Gusto'}</div>
+                <div style={{ fontSize:16, fontWeight:600, color:S.ink }}>{uploaded?'headcount_q2_2026.csv · 62 rows':t.dropFile}</div>
+                <div style={{ fontSize:12, color:S.inkMuted, marginTop:4 }}>{uploaded?t.fileReady:t.fileConnect}</div>
               </div>
               <div style={{ display:'flex', justifyContent:'flex-end', gap:8, marginTop:16 }}>
-                <button onClick={()=>setNav('home')} style={{ padding:'9px 14px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>Cancel</button>
-                <button disabled={!uploaded} onClick={()=>setStep(2)} style={{ padding:'9px 14px', background:uploaded?S.accent:S.lineSoft, color:uploaded?'#fff':S.inkMuted, border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:uploaded?'pointer':'not-allowed' }}>Continue →</button>
+                <button onClick={()=>setNav('home')} style={{ padding:'9px 14px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>{t.cancelBtn}</button>
+                <button disabled={!uploaded} onClick={()=>setStep(2)} style={{ padding:'9px 14px', background:uploaded?S.accent:S.lineSoft, color:uploaded?'#fff':S.inkMuted, border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:uploaded?'pointer':'not-allowed' }}>{t.continueBtn}</button>
               </div>
             </div>
           )}
@@ -901,7 +1120,7 @@
             <div>
               <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
                 <div style={{ display:'grid', gridTemplateColumns:'1.6fr 1.6fr 70px 80px', gap:12, padding:'10px 14px', background:S.bg, fontSize:11, fontWeight:600, color:S.inkMuted, textTransform:'uppercase', letterSpacing:0.4, borderBottom:`1px solid ${S.line}` }}>
-                  <div>Your title</div><div>Pulso canonical</div><div style={{textAlign:'right'}}>People</div><div style={{textAlign:'right'}}>Match</div>
+                  {t.mappingCols.map((c,i)=><div key={i} style={i>=2?{textAlign:'right'}:{}}>{c}</div>)}
                 </div>
                 {[
                   {a:'Backend Engineer Ssr.',b:'Senior Software Engineer',n:14,m:98},
@@ -919,20 +1138,15 @@
                 ))}
               </div>
               <div style={{ display:'flex', justifyContent:'flex-end', gap:8, marginTop:16 }}>
-                <button onClick={()=>setStep(1)} style={{ padding:'9px 14px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>Back</button>
-                <button onClick={()=>setStep(3)} style={{ padding:'9px 14px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>Continue →</button>
+                <button onClick={()=>setStep(1)} style={{ padding:'9px 14px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>{t.backBtn}</button>
+                <button onClick={()=>setStep(3)} style={{ padding:'9px 14px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>{t.continueBtn}</button>
               </div>
             </div>
           )}
           {step===3&&(
             <div>
               <div style={{ padding:22, background:S.surface, border:`1px solid ${S.line}`, borderRadius:8 }}>
-                {[
-                  {t:'Aggregation minimum',d:'Your figures appear in cohorts of 8+ peers.'},
-                  {t:'Hashing',d:'Names and employee IDs are SHA-256 hashed client-side.'},
-                  {t:'Data ownership',d:'Delete your contribution from your profile any time.'},
-                  {t:'No resale',d:"We don't sell row-level data."},
-                ].map((x,i,a)=>(
+                {t.contract.map((x,i,a)=>(
                   <div key={i} style={{ display:'grid', gridTemplateColumns:'20px 1fr', gap:12, padding:'10px 0', borderBottom:i<a.length-1?`1px solid ${S.lineSoft}`:'none' }}>
                     <div style={{ marginTop:5, width:10, height:10, borderRadius:5, background:S.accent }} />
                     <div>
@@ -943,8 +1157,8 @@
                 ))}
               </div>
               <div style={{ display:'flex', justifyContent:'flex-end', gap:8, marginTop:16 }}>
-                <button onClick={()=>setStep(2)} style={{ padding:'9px 14px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>Back</button>
-                <button onClick={()=>setStep(4)} style={{ padding:'9px 14px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>Sign & contribute →</button>
+                <button onClick={()=>setStep(2)} style={{ padding:'9px 14px', background:S.surface, color:S.ink, border:`1px solid ${S.line}`, borderRadius:6, fontSize:13, cursor:'pointer' }}>{t.backBtn}</button>
+                <button onClick={()=>setStep(4)} style={{ padding:'9px 14px', background:S.accent, color:'#fff', border:'none', borderRadius:6, fontSize:13, fontWeight:500, cursor:'pointer' }}>{t.signBtn}</button>
               </div>
             </div>
           )}
@@ -952,23 +1166,17 @@
       );
     }
 
-    function Settings() {
+    function Settings({ lang }) {
+      const t = STRINGS[lang];
       return (
         <div style={{ padding:'24px 28px 60px', maxWidth:720 }}>
-          <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:16 }}>Company profile</div>
+          <div style={{ fontSize:22, fontWeight:600, color:S.ink, letterSpacing:-0.3, marginBottom:16 }}>{t.settingsTitle}</div>
           <div style={{ background:S.surface, border:`1px solid ${S.line}`, borderRadius:8, overflow:'hidden' }}>
-            {[
-              {k:'Name',v:'Nuvelo'},
-              {k:'Industry',v:'Fintech'},
-              {k:'Stage',v:'Series D · 2024 · USD 300M'},
-              {k:'HQ',v:'Buenos Aires, Argentina'},
-              {k:'Headcount',v:'62 · 7 open reqs'},
-              {k:'Cohort',v:'Fintech · Series D · LATAM · 40–120 FTE'},
-            ].map((x,i,a)=>(
+            {t.settingsFields.map((x,i,a)=>(
               <div key={i} style={{ display:'grid', gridTemplateColumns:'160px 1fr auto', gap:12, padding:'14px 16px', borderBottom:i<a.length-1?`1px solid ${S.lineSoft}`:'none', alignItems:'center' }}>
                 <div style={{ fontSize:11, color:S.inkMuted, fontWeight:600, textTransform:'uppercase', letterSpacing:0.4 }}>{x.k}</div>
                 <div style={{ fontSize:13, color:S.ink }}>{x.v}</div>
-                <button style={{ fontSize:12, background:'transparent', border:'none', cursor:'pointer', color:S.accent, fontWeight:500 }}>Edit</button>
+                <button style={{ fontSize:12, background:'transparent', border:'none', cursor:'pointer', color:S.accent, fontWeight:500 }}>{t.editBtn}</button>
               </div>
             ))}
           </div>
@@ -976,41 +1184,42 @@
       );
     }
 
-    function Insights({ period }) {
+    function Insights({ period, lang }) {
+      const t = STRINGS[lang];
       const pm = period === 'annual' ? 12 : 1;
-      const periodSuffix = period === 'annual' ? '/yr' : '/mo';
+      const ps = t.periodSuffix[period];
       const srEngP25 = Math.round(5400 * pm);
       const srEngP50 = Math.round(6100 * pm);
       const pmP50    = Math.round(7900 * pm);
       const delta    = Math.round(700 * pm);
 
-      const cards = [
+      const cards = lang === 'pt' ? [
         {
           icon: '⚠',
           iconBg: `${S.watch}20`,
           border: `2px solid ${S.watch}`,
           bg: S.surface,
-          title: 'Senior Engineer offers at P25 are slowing Engineering growth',
+          title: 'Ofertas de Eng. Sênior no P25 estão freando o crescimento de Engineering',
           body: [
-            { label: 'PulsoComp', text: `Your Senior Eng. offers avg. $${srEngP25.toLocaleString()}${periodSuffix} (P25).` },
-            { label: 'PulsoOrg',  text: 'You\'re 3 engineers below benchmark for Series A. Target HC is 22, you\'re at 19.' },
-            { label: 'Impact',    text: '67% of candidates at this level decline offers below P40.' },
+            { label: 'PulsoComp', text: `Suas ofertas de Eng. Sênior têm média de $${srEngP25.toLocaleString()}${ps} (P25).` },
+            { label: 'PulsoOrg',  text: 'Você tem 3 engenheiros abaixo do benchmark para Série A. HC alvo: 22, você tem 19.' },
+            { label: 'Impacto',   text: '67% dos candidatos neste nível recusam ofertas abaixo do P40.' },
           ],
           cta: null,
-          rec: `Move Senior Eng. anchor to P50 ($${srEngP50.toLocaleString()}${periodSuffix}). Budget impact: +$${delta.toLocaleString()}${periodSuffix} × 3 hires. Solves both comp competitiveness and HC gap.`,
+          rec: `Mover a âncora de Eng. Sênior para P50 ($${srEngP50.toLocaleString()}${ps}). Impacto no orçamento: +$${delta.toLocaleString()}${ps} × 3 contratações. Resolve competitividade e o gap de HC.`,
         },
         {
           icon: '◈',
           iconBg: `${S.accent}15`,
           border: `1px solid ${S.line}`,
           bg: S.surface,
-          title: 'Eng:PM ratio suggests adding a Senior PM in Q2',
+          title: 'Ratio Eng:PM sugere adicionar um PM Sênior no Q2',
           body: [
-            { label: 'PulsoOrg',  text: 'Current ratio 12:1 (24 eng / 2 PM). Healthy range: 6–10:1.' },
-            { label: 'PulsoComp', text: `Sr. PM market rate: $${pmP50.toLocaleString()}${periodSuffix} (P50).` },
-            { label: 'Timing',    text: '78% of peers made this hire before raising Series B.' },
+            { label: 'PulsoOrg',  text: 'Ratio atual 12:1 (24 eng / 2 PM). Faixa saudável: 6–10:1.' },
+            { label: 'PulsoComp', text: `Taxa de mercado PM Sênior: $${pmP50.toLocaleString()}${ps} (P50).` },
+            { label: 'Timing',    text: '78% dos pares fizeram essa contratação antes do Série B.' },
           ],
-          cta: 'Open req for Sr. PM →',
+          cta: 'Abrir req para PM Sênior →',
           rec: null,
         },
         {
@@ -1018,11 +1227,54 @@
           iconBg: `${S.good}20`,
           border: `1px solid ${S.good}`,
           bg: `${S.good}08`,
-          title: 'Data / Engineering ratio is healthy',
+          title: 'Ratio Dados / Engineering está saudável',
           body: [
-            { label: 'PulsoOrg',   text: '4 Data Scientists for 24 Engineers = 6:1 ratio.' },
-            { label: 'Benchmark',  text: 'Fintech Series A median is 5.2:1.' },
-            { label: 'PulsoComp',  text: 'Your Data Scientist comp is at P52 — retaining well.' },
+            { label: 'PulsoOrg',   text: '4 Cientistas de Dados para 24 Engenheiros = ratio 6:1.' },
+            { label: 'Benchmark',  text: 'Mediana Fintech Série A é 5,2:1.' },
+            { label: 'PulsoComp',  text: 'Sua remuneração de Cientista de Dados está no P52 — boa retenção.' },
+          ],
+          cta: null,
+          rec: null,
+        },
+      ] : [
+        {
+          icon: '⚠',
+          iconBg: `${S.watch}20`,
+          border: `2px solid ${S.watch}`,
+          bg: S.surface,
+          title: 'Las ofertas de Ing. Senior en P25 están frenando el crecimiento de Engineering',
+          body: [
+            { label: 'PulsoComp', text: `Tus ofertas de Ing. Senior promedian $${srEngP25.toLocaleString()}${ps} (P25).` },
+            { label: 'PulsoOrg',  text: 'Tenés 3 ingenieros por debajo del benchmark para Serie A. HC objetivo: 22, tenés 19.' },
+            { label: 'Impacto',   text: 'El 67% de los candidatos en este nivel rechazan ofertas por debajo del P40.' },
+          ],
+          cta: null,
+          rec: `Mover el ancla de Ing. Senior a P50 ($${srEngP50.toLocaleString()}${ps}). Impacto en presupuesto: +$${delta.toLocaleString()}${ps} × 3 contrataciones. Resuelve competitividad y el gap de HC.`,
+        },
+        {
+          icon: '◈',
+          iconBg: `${S.accent}15`,
+          border: `1px solid ${S.line}`,
+          bg: S.surface,
+          title: 'El ratio Eng:PM sugiere sumar un PM Senior en Q2',
+          body: [
+            { label: 'PulsoOrg',  text: 'Ratio actual 12:1 (24 eng / 2 PM). Rango saludable: 6–10:1.' },
+            { label: 'PulsoComp', text: `Tarifa de mercado PM Senior: $${pmP50.toLocaleString()}${ps} (P50).` },
+            { label: 'Timing',    text: 'El 78% de los pares hizo esta contratación antes de levantar Serie B.' },
+          ],
+          cta: 'Abrir req para PM Senior →',
+          rec: null,
+        },
+        {
+          icon: '✓',
+          iconBg: `${S.good}20`,
+          border: `1px solid ${S.good}`,
+          bg: `${S.good}08`,
+          title: 'El ratio Datos / Engineering es saludable',
+          body: [
+            { label: 'PulsoOrg',   text: '4 Data Scientists para 24 Engineers = ratio 6:1.' },
+            { label: 'Benchmark',  text: 'La mediana Fintech Serie A es 5,2:1.' },
+            { label: 'PulsoComp',  text: 'Tu compensación de Data Scientist está en P52 — buena retención.' },
           ],
           cta: null,
           rec: null,
@@ -1031,8 +1283,8 @@
 
       return (
         <div style={{ padding: '24px 28px 60px' }}>
-          <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>Structural intelligence</div>
-          <div style={{ fontSize: 13, color: S.inkMuted, marginBottom: 24 }}>How your compensation strategy impacts organizational health</div>
+          <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>{t.insightsTitle}</div>
+          <div style={{ fontSize: 13, color: S.inkMuted, marginBottom: 24 }}>{t.insightsSub}</div>
 
           {cards.map((c, i) => (
             <div key={i} style={{ padding: 20, background: c.bg, border: c.border, borderRadius: 10, marginBottom: 14 }}>
@@ -1052,7 +1304,7 @@
                   </div>
                   {c.rec && (
                     <div style={{ padding: '10px 14px', background: S.accentSoft, borderRadius: 6, fontSize: 13, color: S.ink }}>
-                      <strong>Recommendation:</strong> {c.rec}
+                      <strong>{t.recommendation}</strong> {c.rec}
                     </div>
                   )}
                   {c.cta && (
@@ -1075,6 +1327,7 @@
       const [searchOpen, setSearchOpen] = useState(false);
       const [period, setPeriod] = useState('monthly');
       const [userRole, setUserRole] = useState('startup');
+      const [lang, setLang] = useState('es');
       const showOrg = true;
 
       useEffect(() => {
@@ -1090,20 +1343,20 @@
       }, []);
 
       let content;
-      if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} userRole={userRole} />;
-      else if (nav === 'insights')              content = <Insights period={period} />;
-      else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} period={period} />;
-      else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} period={period} />;
-      else if (nav === 'bands')                 content = <Bands period={period} />;
-      else if (nav === 'org' || nav==='ratios') content = <Org />;
-      else if (nav === 'contribute')            content = <Contribute setNav={setNav} />;
-      else if (nav === 'settings')              content = <Settings />;
+      if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} userRole={userRole} lang={lang} />;
+      else if (nav === 'insights')              content = <Insights period={period} lang={lang} />;
+      else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} period={period} lang={lang} />;
+      else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} period={period} lang={lang} />;
+      else if (nav === 'bands')                 content = <Bands period={period} lang={lang} />;
+      else if (nav === 'org' || nav==='ratios') content = <Org lang={lang} />;
+      else if (nav === 'contribute')            content = <Contribute setNav={setNav} lang={lang} />;
+      else if (nav === 'settings')              content = <Settings lang={lang} />;
 
       return (
         <div style={{ display:'grid', gridTemplateColumns:'220px 1fr', minHeight:'100vh', background:S.bg, fontFamily:S.font, color:S.ink }}>
-          <Sidebar nav={nav} setNav={setNav} showOrg={showOrg} />
+          <Sidebar nav={nav} setNav={setNav} showOrg={showOrg} lang={lang} />
           <div style={{ display:'flex', flexDirection:'column', minHeight:'100%' }}>
-            <Topbar onSearch={() => setSearchOpen(true)} period={period} setPeriod={setPeriod} userRole={userRole} setUserRole={setUserRole} />
+            <Topbar onSearch={() => setSearchOpen(true)} period={period} setPeriod={setPeriod} userRole={userRole} setUserRole={setUserRole} lang={lang} setLang={setLang} />
             <div style={{ flex:1, overflow:'auto' }}>{content}</div>
           </div>
           <SearchModal
@@ -1112,6 +1365,7 @@
             setNav={setNav}
             setSelectedRoleId={setSelectedRoleId}
             period={period}
+            lang={lang}
           />
         </div>
       );

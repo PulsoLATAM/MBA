@@ -270,9 +270,8 @@
           display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 90,
         }}>
           <div style={{ background: '#fff', borderRadius: 14, width: '100%', maxWidth: 580, margin: '0 16px', boxShadow: '0 24px 72px rgba(0,0,0,0.22)', overflow: 'hidden' }}>
-            {/* Input */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 18px', borderBottom: `1px solid ${S.line}` }}>
-              <span style={{ fontSize: 16, color: S.inkMuted }}>⌕</span>
+              <span style={{ fontSize: 16, color: S.inkMuted }}>⎕</span>
               <input
                 ref={inputRef}
                 value={q}
@@ -284,7 +283,6 @@
               <span onClick={onClose} style={{ fontSize: '0.7rem', fontWeight: 600, background: '#f1f2f4', border: `1px solid ${S.line}`, borderRadius: 5, padding: '2px 8px', color: S.inkMuted, cursor: 'pointer' }}>ESC</span>
             </div>
 
-            {/* Results */}
             <div style={{ maxHeight: 380, overflowY: 'auto', padding: '6px 0 10px' }}>
               {results.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '36px 20px', color: S.inkMuted, fontSize: 13 }}>
@@ -315,7 +313,6 @@
               })}
             </div>
 
-            {/* Footer hints */}
             <div style={{ borderTop: `1px solid ${S.line}`, padding: '9px 18px', display: 'flex', gap: 14 }}>
               {[['↑↓','navegar'],['↵','abrir'],['ESC','cerrar']].map(([k,l]) => (
                 <span key={k} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.7rem', color: S.inkFaint }}>
@@ -388,7 +385,7 @@
             onMouseEnter={e => e.currentTarget.style.borderColor = S.accent}
             onMouseLeave={e => e.currentTarget.style.borderColor = S.line}
           >
-            <span style={{ fontSize: 14 }}>⌕</span>
+            <span style={{ fontSize: 14 }}>⎕</span>
             <span>Search roles, bands, peers</span>
             <span style={{ marginLeft: 'auto', fontFamily: S.mono, fontSize: 10 }}>⌘K</span>
           </div>
@@ -398,98 +395,137 @@
     }
 
     function Home({ setNav, showOrg, period, userRole }) {
-      const medMonthly = 6100;
-      const medValue = period === 'annual'
-        ? `$${(medMonthly * 12).toLocaleString()}`
-        : `$${medMonthly.toLocaleString()}`;
-      const medLabel = period === 'annual' ? 'Median eng. salary / yr' : 'Median eng. salary / mo';
-
       const greeting = userRole === 'accelerator' ? 'Good morning, Fortia'
         : userRole === 'vc' ? 'Good morning, Orion'
         : 'Good morning, Carolina';
 
-      const context = userRole === 'accelerator'
-        ? 'Fri · Apr 24 · Portfolio: 28 companies · 8 countries · Series A–C'
+      const subline = userRole === 'accelerator'
+        ? '28 portfolio companies · 8 countries · last updated today'
         : userRole === 'vc'
-        ? 'Fri · Apr 24 · Due diligence: Fintech · 14 active targets · LATAM'
-        : 'Fri · Apr 24 · Peer set: Fintech · Series A · LATAM · 284 peers';
+        ? '14 active targets · LATAM fintech · due diligence mode'
+        : 'Peer set: 284 LATAM fintechs · Series A · last updated today';
 
-      const stats = userRole === 'accelerator'
+      const products = [
+        {
+          id: 'comp', nav: 'comp',
+          color: '#0ABFCF', colorSoft: '#e0f9fb', icon: '◈', name: 'PulsoComp',
+          headline: userRole === 'startup' ? 'Are you paying fairly?'
+            : userRole === 'accelerator' ? 'Portfolio compensation tracker'
+            : 'Compensation due diligence',
+          desc: userRole === 'startup'
+            ? 'Compare your salaries against 284 LATAM tech companies at the same stage and size.'
+            : userRole === 'accelerator'
+            ? 'Track compensation health across all 28 portfolio companies in one place.'
+            : 'Benchmark target companies against LATAM market data before you invest.',
+          badge: userRole === 'startup' ? '7 of 12 roles above market median'
+            : userRole === 'accelerator' ? '3 companies need salary review'
+            : '6 compensation risk flags found',
+          badgeTone: userRole === 'startup' ? S.good : S.bad,
+          cta: 'Explore salaries →',
+        },
+        showOrg && {
+          id: 'org', nav: 'org',
+          color: S.accent, colorSoft: S.accentSoft, icon: '◇', name: 'PulsoOrg',
+          headline: userRole === 'startup' ? 'Is your team built right?'
+            : userRole === 'accelerator' ? 'Portfolio org health'
+            : 'Org structure analysis',
+          desc: userRole === 'startup'
+            ? 'See how your team structure compares to similar startups — and where to hire next.'
+            : userRole === 'accelerator'
+            ? 'Compare org structures across portfolio companies and identify scaling risks early.'
+            : 'Evaluate org maturity and team composition before closing a deal.',
+          badge: userRole === 'startup' ? '8 of 9 functions healthy'
+            : userRole === 'accelerator' ? 'Avg. org health score 7.8/10'
+            : '2 of 14 targets are Series B ready',
+          badgeTone: userRole === 'startup' ? S.good : S.watch,
+          cta: 'Explore structure →',
+        },
+      ].filter(Boolean);
+
+      const findings = userRole === 'accelerator'
         ? [
-            { label: 'Portfolio cos. tracked', value: '28/28', delta: 'All active',          tone: 'good'  },
-            { label: 'Avg. comp growth',        value: '+12%',  delta: 'Q1 vs Q4',            tone: 'good'  },
-            { label: 'Below P25 alert',          value: '3 cos.', delta: 'Need salary review', tone: 'bad'   },
-            { label: 'Org health (avg)',         value: '7.8/10', delta: '+0.3 vs last qtr',   tone: 'watch' },
+            { icon: '✓', tone: S.good,  bg: `${S.good}12`,  text: 'All 28 portfolio companies are actively tracked and up to date.' },
+            { icon: '⚠', tone: S.watch, bg: `${S.watch}12`, text: 'Average comp growth is +12% vs. Q4 — within healthy range for the cohort.' },
+            { icon: '!', tone: S.bad,   bg: `${S.bad}12`,   text: '3 companies are paying below market — they may struggle to retain key talent.' },
           ]
         : userRole === 'vc'
         ? [
-            { label: 'Portfolio analysis',  value: '14 cos.', delta: '3 Series A ready',       tone: 'good'  },
-            { label: 'Org health score',    value: '8.2/10',  delta: '+0.4 vs cohort',          tone: 'good'  },
-            { label: 'Comp risk flags',     value: '6',        delta: 'Across 4 companies',     tone: 'bad'   },
-            { label: 'DD reports ready',    value: '2/14',     delta: '12 in progress',          tone: 'watch' },
+            { icon: '✓', tone: S.good,  bg: `${S.good}12`,  text: '3 targets are showing strong org maturity signals — Series A ready.' },
+            { icon: '⚠', tone: S.watch, bg: `${S.watch}12`, text: 'Compensation risk flags found in 4 of 14 targets — worth reviewing before term sheet.' },
+            { icon: '!', tone: S.bad,   bg: `${S.bad}12`,   text: 'Only 2 of 14 DD reports are complete. 12 still in progress.' },
           ]
         : [
-            { label: 'Bands at P50+',  value: '7/12',    delta: '+2 since Mar',      tone: 'good'  },
-            { label: medLabel,         value: medValue,  delta: '+4.2% · 30d',       tone: 'good'  },
-            { label: 'Retention risk', value: '2 IC',    delta: 'Both below P25',    tone: 'bad'   },
-            showOrg
-              ? { label: 'Org health', value: '8/9',    delta: 'Data function low', tone: 'watch' }
-              : { label: 'Open reqs',  value: '7',      delta: '3 above P75',       tone: 'watch' },
+            { icon: '✓', tone: S.good,  bg: `${S.good}12`,  text: 'Most of your salaries are competitive — 7 of 12 roles are at or above the market midpoint.' },
+            { icon: '⚠', tone: S.watch, bg: `${S.watch}12`, text: 'Your Finance team is smaller than similar companies at your stage — consider hiring.' },
+            { icon: '!', tone: S.bad,   bg: `${S.bad}12`,   text: '2 engineers are being paid below market — this increases the risk of them leaving.' },
           ];
 
       return (
-        <div style={{ padding: '24px 28px 60px' }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 18 }}>
+        <div style={{ padding: '28px 28px 60px', maxWidth: 860 }}>
+
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
             <div>
-              <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>{greeting}</div>
-              <div style={{ fontSize: 13, color: S.inkMuted, marginTop: 4 }}>{context}</div>
+              <div style={{ fontSize: 24, fontWeight: 700, color: S.ink, letterSpacing: -0.4 }}>{greeting}</div>
+              <div style={{ fontSize: 13, color: S.inkMuted, marginTop: 4 }}>{subline}</div>
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button style={{ padding: '7px 12px', background: S.surface, color: S.ink, border: `1px solid ${S.line}`, borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>Export PDF</button>
-              <button style={{ padding: '7px 12px', background: S.accent, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>Share report</button>
-            </div>
+            <button onClick={() => setNav('insights')} style={{ padding: '8px 14px', background: S.accent, color: '#fff', border: 'none', borderRadius: 7, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>
+              View insights →
+            </button>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 22 }}>
-            {stats.map((s, i) => (
-              <div key={i} style={{ padding: 16, background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8 }}>
-                <Stat {...s} />
+          <div style={{ display: 'grid', gridTemplateColumns: showOrg ? '1fr 1fr' : '1fr', gap: 14, marginBottom: 22 }}>
+            {products.map(p => (
+              <div key={p.id}
+                onClick={() => setNav(p.nav)}
+                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.08)'}
+                onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+                style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 12, padding: 22, cursor: 'pointer', transition: 'box-shadow 0.15s' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 12 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 9, background: p.colorSoft, display: 'grid', placeItems: 'center', fontSize: 15, color: p.color }}>
+                    {p.icon}
+                  </div>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: p.color, letterSpacing: 0.4, textTransform: 'uppercase' }}>{p.name}</span>
+                </div>
+                <div style={{ fontSize: 17, fontWeight: 600, color: S.ink, marginBottom: 6, letterSpacing: -0.2 }}>{p.headline}</div>
+                <div style={{ fontSize: 13, color: S.inkMuted, lineHeight: 1.55, marginBottom: 16 }}>{p.desc}</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: p.badgeTone, background: `${p.badgeTone}15`, padding: '3px 10px', borderRadius: 100 }}>{p.badge}</span>
+                  <span style={{ fontSize: 12, fontWeight: 500, color: S.accent }}>{p.cta}</span>
+                </div>
               </div>
             ))}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1.7fr 1fr', gap: 16 }}>
-            <section style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', borderBottom: `1px solid ${S.line}` }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: S.ink }}>Flags</div>
-                <div style={{ fontSize: 12, color: S.inkMuted }}>4 open · week of Apr 20</div>
-              </div>
-              {PULSO_FLAGS.map((f, i) => {
-                const tone = f.severity === 'high' ? S.bad : f.severity === 'med' ? S.watch : S.good;
-                const tag  = f.kind === 'hire' ? 'Hiring' : f.kind === 'retain' ? 'Retention' : f.kind === 'org' ? 'Structure' : 'Planning';
-                return (
-                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '90px 1fr auto', gap: 12, padding: '14px 16px', borderBottom: i < 3 ? `1px solid ${S.lineSoft}` : 'none', alignItems: 'center' }}>
-                    <span style={{ fontSize: 11, padding: '3px 8px', background: `${tone}18`, color: tone, borderRadius: 999, fontWeight: 500, textAlign: 'center' }}>{tag}</span>
-                    <div style={{ fontSize: 13, color: S.ink, lineHeight: 1.45 }}>{f.text}</div>
-                    <button onClick={() => setNav(f.kind === 'org' ? 'org' : 'comp')} style={{ fontSize: 12, color: S.accent, background: 'transparent', border: 'none', cursor: 'pointer', fontWeight: 500 }}>Open →</button>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: S.inkMuted, textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 10 }}>Key findings</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              {findings.map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 11, padding: '11px 14px', background: f.bg, borderRadius: 8 }}>
+                  <div style={{ width: 20, height: 20, borderRadius: 10, background: f.tone, color: '#fff', display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>
+                    {f.icon}
                   </div>
-                );
-              })}
-            </section>
-            <section style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 8, overflow: 'hidden' }}>
-              <div style={{ padding: '14px 16px', borderBottom: `1px solid ${S.line}`, fontSize: 14, fontWeight: 600, color: S.ink }}>LATAM market this week</div>
-              {[
-                { t: 'Argentina: Senior FE bands +8% (currency adjust.)',  s: 'Fintech · AR · 30d'     },
-                { t: 'Brazil: 2 Series B fintechs added Head of Data',     s: 'São Paulo cohort'       },
-                { t: 'Mexico: CFO equity packages moved to 0.5–1.2%',      s: 'Series A cross-sector'  },
-                { t: 'Regional: Eng:PM ratio tightening to 8.2:1',         s: 'Fintech LATAM'          },
-              ].map((x, i, a) => (
-                <div key={i} style={{ padding: '12px 16px', borderBottom: i < a.length - 1 ? `1px solid ${S.lineSoft}` : 'none' }}>
-                  <div style={{ fontSize: 13, color: S.ink, lineHeight: 1.4 }}>{x.t}</div>
-                  <div style={{ fontSize: 11, color: S.inkMuted, marginTop: 3 }}>{x.s}</div>
+                  <div style={{ fontSize: 13, color: S.ink, lineHeight: 1.5 }}>{f.text}</div>
                 </div>
               ))}
-            </section>
+            </div>
+          </div>
+
+          <div style={{ background: S.surface, border: `1px solid ${S.line}`, borderRadius: 10, overflow: 'hidden' }}>
+            <div style={{ padding: '11px 16px', borderBottom: `1px solid ${S.line}`, fontSize: 12, fontWeight: 600, color: S.ink }}>LATAM market this week</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+              {[
+                { t: 'Argentina: Senior FE bands +8% (currency adjust.)',  s: 'Fintech · AR · 30d'    },
+                { t: 'Brazil: 2 Series B fintechs added Head of Data',     s: 'São Paulo cohort'      },
+                { t: 'Mexico: CFO equity packages moved to 0.5–1.2%',      s: 'Series A cross-sector' },
+                { t: 'Regional: Eng:PM ratio tightening to 8.2:1',         s: 'Fintech LATAM'         },
+              ].map((x, i) => (
+                <div key={i} style={{ padding: '10px 16px', borderBottom: i < 2 ? `1px solid ${S.lineSoft}` : 'none', borderRight: i % 2 === 0 ? `1px solid ${S.lineSoft}` : 'none' }}>
+                  <div style={{ fontSize: 12, color: S.ink, lineHeight: 1.4 }}>{x.t}</div>
+                  <div style={{ fontSize: 11, color: S.inkMuted, marginTop: 2 }}>{x.s}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       );
@@ -649,7 +685,7 @@
               { label:`P75 ${periodSuffix}`,          value:`$${Math.round(r.p75*pm).toLocaleString()}` },
               { label:'Your offer',                   value:`$${Math.round(mine*pm).toLocaleString()}`, delta: mineDelta, tone: mineTone },
             ].map((s,i) => (
-              <div key={i} style={{ padding:16, background:S.surface, border:`1px solid ${i===3?S.bad:S.line}`, borderRadius:8 }}>
+              <div key={i} style={{ padding:16, background:S.surface, border:`1px solid ${i===3?(mineAbove?S.good:S.bad):S.line}`, borderRadius:8 }}>
                 <Stat {...s} />
               </div>
             ))}

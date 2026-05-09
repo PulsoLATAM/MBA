@@ -113,8 +113,8 @@
 
     const STRINGS = {
       es: {
-        nav: { home:'Inicio', insights:'Insights', comp:'Compensación', role:'Detalle de rol', bands:'Bandas', org:'Estructura', ratios:'Ratios', contribute:'Contribuir', settings:'Configuración' },
-        sec: { intelligence:'Inteligencia', pulsocomp:'PulsoComp', pulsoorg:'PulsoOrg', data:'Datos' },
+        nav: { home:'Inicio', comp:'Compensación', role:'Detalle de rol', bands:'Bandas', org:'Estructura', ratios:'Ratios', contribute:'Contribuir', settings:'Configuración' },
+        sec: { pulsocomp:'PulsoComp', pulsoorg:'PulsoOrg', data:'Datos' },
         coverage: 'Cobertura de datos',
         views: { startup:'Vista startup', accelerator:'Vista aceleradora', vc:'Vista fondo' },
         chips: { portfolio:'28 empresas en cartera', dd:'Modo due diligence' },
@@ -131,7 +131,6 @@
           accelerator: '28 empresas en cartera · 8 países · actualizado hoy',
           vc: '14 targets activos · Fintech LATAM · modo due diligence',
         },
-        viewInsights: 'Ver insights →',
         compCard: {
           headlines: { startup:'¿Estás pagando de forma justa?', accelerator:'Compensación del portafolio', vc:'Due diligence de compensación' },
           descs: {
@@ -232,13 +231,10 @@
           {k:'Etapa',v:'Series D · 2024 · USD 300M'},{k:'Sede',v:'Buenos Aires, Argentina'},
           {k:'Headcount',v:'62 · 7 reqs abiertas'},{k:'Cohorte',v:'Fintech · Series D · LATAM · 40–120 FTE'},
         ],
-        insightsTitle: 'Inteligencia estructural',
-        insightsSub: 'Cómo tu estrategia de compensación impacta la salud organizacional',
-        recommendation: 'Recomendación:',
       },
       pt: {
-        nav: { home:'Início', insights:'Insights', comp:'Remuneração', role:'Detalhe do cargo', bands:'Faixas', org:'Estrutura', ratios:'Ratios', contribute:'Contribuir', settings:'Configurações' },
-        sec: { intelligence:'Inteligência', pulsocomp:'PulsoComp', pulsoorg:'PulsoOrg', data:'Dados' },
+        nav: { home:'Início', comp:'Remuneração', role:'Detalhe do cargo', bands:'Faixas', org:'Estrutura', ratios:'Ratios', contribute:'Contribuir', settings:'Configurações' },
+        sec: { pulsocomp:'PulsoComp', pulsoorg:'PulsoOrg', data:'Dados' },
         coverage: 'Cobertura de dados',
         views: { startup:'Visão startup', accelerator:'Visão aceleradora', vc:'Visão fundo' },
         chips: { portfolio:'28 empresas no portfólio', dd:'Modo due diligence' },
@@ -255,7 +251,6 @@
           accelerator: '28 empresas no portfólio · 8 países · atualizado hoje',
           vc: '14 alvos ativos · Fintech LATAM · modo due diligence',
         },
-        viewInsights: 'Ver insights →',
         compCard: {
           headlines: { startup:'Você está pagando de forma justa?', accelerator:'Remuneração do portfólio', vc:'Due diligence de remuneração' },
           descs: {
@@ -356,9 +351,6 @@
           {k:'Estágio',v:'Series D · 2024 · USD 300M'},{k:'Sede',v:'Buenos Aires, Argentina'},
           {k:'Headcount',v:'62 · 7 vagas abertas'},{k:'Grupo',v:'Fintech · Series D · LATAM · 40–120 FTE'},
         ],
-        insightsTitle: 'Inteligência estrutural',
-        insightsSub: 'Como sua estratégia de remuneração impacta a saúde organizacional',
-        recommendation: 'Recomendação:',
       },
     };
 
@@ -411,7 +403,6 @@
       const t = STRINGS[lang];
       const items = [
         { id: 'home',       label: t.nav.home,         icon: '▢' },
-        { id: 'insights',   label: t.nav.insights,     icon: '◆', section: t.sec.intelligence },
         { id: 'comp',       label: t.nav.comp,          icon: '◈', section: t.sec.pulsocomp },
         { id: 'role',       label: t.nav.role,          icon: '·', indent: true },
         { id: 'bands',      label: t.nav.bands,         icon: '·', indent: true },
@@ -695,9 +686,6 @@
               <div style={{ fontSize: 24, fontWeight: 700, color: S.ink, letterSpacing: -0.4 }}>{t.greetings[userRole]}</div>
               <div style={{ fontSize: 13, color: S.inkMuted, marginTop: 4 }}>{t.sublines[userRole]}</div>
             </div>
-            <button onClick={() => setNav('insights')} style={{ padding: '8px 14px', background: S.accent, color: '#fff', border: 'none', borderRadius: 7, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>
-              {t.viewInsights}
-            </button>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: showOrg ? '1fr 1fr' : '1fr', gap: 14, marginBottom: 22 }}>
@@ -1184,142 +1172,6 @@
       );
     }
 
-    function Insights({ period, lang }) {
-      const t = STRINGS[lang];
-      const pm = period === 'annual' ? 12 : 1;
-      const ps = t.periodSuffix[period];
-      const srEngP25 = Math.round(5400 * pm);
-      const srEngP50 = Math.round(6100 * pm);
-      const pmP50    = Math.round(7900 * pm);
-      const delta    = Math.round(700 * pm);
-
-      const cards = lang === 'pt' ? [
-        {
-          icon: '⚠',
-          iconBg: `${S.watch}20`,
-          border: `2px solid ${S.watch}`,
-          bg: S.surface,
-          title: 'Ofertas de Eng. Sênior no P25 estão freando o crescimento de Engineering',
-          body: [
-            { label: 'PulsoComp', text: `Suas ofertas de Eng. Sênior têm média de $${srEngP25.toLocaleString()}${ps} (P25).` },
-            { label: 'PulsoOrg',  text: 'Você tem 3 engenheiros abaixo do benchmark para Série A. HC alvo: 22, você tem 19.' },
-            { label: 'Impacto',   text: '67% dos candidatos neste nível recusam ofertas abaixo do P40.' },
-          ],
-          cta: null,
-          rec: `Mover a âncora de Eng. Sênior para P50 ($${srEngP50.toLocaleString()}${ps}). Impacto no orçamento: +$${delta.toLocaleString()}${ps} × 3 contratações. Resolve competitividade e o gap de HC.`,
-        },
-        {
-          icon: '◈',
-          iconBg: `${S.accent}15`,
-          border: `1px solid ${S.line}`,
-          bg: S.surface,
-          title: 'Ratio Eng:PM sugere adicionar um PM Sênior no Q2',
-          body: [
-            { label: 'PulsoOrg',  text: 'Ratio atual 12:1 (24 eng / 2 PM). Faixa saudável: 6–10:1.' },
-            { label: 'PulsoComp', text: `Taxa de mercado PM Sênior: $${pmP50.toLocaleString()}${ps} (P50).` },
-            { label: 'Timing',    text: '78% dos pares fizeram essa contratação antes do Série B.' },
-          ],
-          cta: 'Abrir req para PM Sênior →',
-          rec: null,
-        },
-        {
-          icon: '✓',
-          iconBg: `${S.good}20`,
-          border: `1px solid ${S.good}`,
-          bg: `${S.good}08`,
-          title: 'Ratio Dados / Engineering está saudável',
-          body: [
-            { label: 'PulsoOrg',   text: '4 Cientistas de Dados para 24 Engenheiros = ratio 6:1.' },
-            { label: 'Benchmark',  text: 'Mediana Fintech Série A é 5,2:1.' },
-            { label: 'PulsoComp',  text: 'Sua remuneração de Cientista de Dados está no P52 — boa retenção.' },
-          ],
-          cta: null,
-          rec: null,
-        },
-      ] : [
-        {
-          icon: '⚠',
-          iconBg: `${S.watch}20`,
-          border: `2px solid ${S.watch}`,
-          bg: S.surface,
-          title: 'Las ofertas de Ing. Senior en P25 están frenando el crecimiento de Engineering',
-          body: [
-            { label: 'PulsoComp', text: `Tus ofertas de Ing. Senior promedian $${srEngP25.toLocaleString()}${ps} (P25).` },
-            { label: 'PulsoOrg',  text: 'Tenés 3 ingenieros por debajo del benchmark para Serie A. HC objetivo: 22, tenés 19.' },
-            { label: 'Impacto',   text: 'El 67% de los candidatos en este nivel rechazan ofertas por debajo del P40.' },
-          ],
-          cta: null,
-          rec: `Mover el ancla de Ing. Senior a P50 ($${srEngP50.toLocaleString()}${ps}). Impacto en presupuesto: +$${delta.toLocaleString()}${ps} × 3 contrataciones. Resuelve competitividad y el gap de HC.`,
-        },
-        {
-          icon: '◈',
-          iconBg: `${S.accent}15`,
-          border: `1px solid ${S.line}`,
-          bg: S.surface,
-          title: 'El ratio Eng:PM sugiere sumar un PM Senior en Q2',
-          body: [
-            { label: 'PulsoOrg',  text: 'Ratio actual 12:1 (24 eng / 2 PM). Rango saludable: 6–10:1.' },
-            { label: 'PulsoComp', text: `Tarifa de mercado PM Senior: $${pmP50.toLocaleString()}${ps} (P50).` },
-            { label: 'Timing',    text: 'El 78% de los pares hizo esta contratación antes de levantar Serie B.' },
-          ],
-          cta: 'Abrir req para PM Senior →',
-          rec: null,
-        },
-        {
-          icon: '✓',
-          iconBg: `${S.good}20`,
-          border: `1px solid ${S.good}`,
-          bg: `${S.good}08`,
-          title: 'El ratio Datos / Engineering es saludable',
-          body: [
-            { label: 'PulsoOrg',   text: '4 Data Scientists para 24 Engineers = ratio 6:1.' },
-            { label: 'Benchmark',  text: 'La mediana Fintech Serie A es 5,2:1.' },
-            { label: 'PulsoComp',  text: 'Tu compensación de Data Scientist está en P52 — buena retención.' },
-          ],
-          cta: null,
-          rec: null,
-        },
-      ];
-
-      return (
-        <div style={{ padding: '24px 28px 60px' }}>
-          <div style={{ fontSize: 22, fontWeight: 600, color: S.ink, letterSpacing: -0.3 }}>{t.insightsTitle}</div>
-          <div style={{ fontSize: 13, color: S.inkMuted, marginBottom: 24 }}>{t.insightsSub}</div>
-
-          {cards.map((c, i) => (
-            <div key={i} style={{ padding: 20, background: c.bg, border: c.border, borderRadius: 10, marginBottom: 14 }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                <div style={{ width: 42, height: 42, borderRadius: 10, background: c.iconBg, display: 'grid', placeItems: 'center', fontSize: 18, fontWeight: 700, color: S.ink, flexShrink: 0 }}>
-                  {c.icon}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: S.ink, marginBottom: 10 }}>{c.title}</div>
-                  <div style={{ fontSize: 13, color: S.inkSoft, lineHeight: 1.7, marginBottom: c.rec || c.cta ? 12 : 0 }}>
-                    {c.body.map((b, j) => (
-                      <span key={j}>
-                        <strong style={{ color: S.ink }}>{b.label}:</strong> {b.text}
-                        {j < c.body.length - 1 ? <br /> : null}
-                      </span>
-                    ))}
-                  </div>
-                  {c.rec && (
-                    <div style={{ padding: '10px 14px', background: S.accentSoft, borderRadius: 6, fontSize: 13, color: S.ink }}>
-                      <strong>{t.recommendation}</strong> {c.rec}
-                    </div>
-                  )}
-                  {c.cta && (
-                    <button style={{ padding: '8px 14px', background: S.accent, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>
-                      {c.cta}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
     function App() {
       const [nav, setNav] = useState('home');
       const [selectedRoleId, setSelectedRoleId] = useState('eng-sr');
@@ -1344,7 +1196,6 @@
 
       let content;
       if (nav === 'home')                       content = <Home setNav={setNav} showOrg={showOrg} period={period} userRole={userRole} lang={lang} />;
-      else if (nav === 'insights')              content = <Insights period={period} lang={lang} />;
       else if (nav === 'comp')                  content = <Comp setNav={setNav} setSelectedRoleId={setSelectedRoleId} filters={filters} setFilters={setFilters} period={period} lang={lang} />;
       else if (nav === 'role')                  content = <RoleDetail setNav={setNav} selectedRoleId={selectedRoleId} period={period} lang={lang} />;
       else if (nav === 'bands')                 content = <Bands period={period} lang={lang} />;

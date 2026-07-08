@@ -1153,9 +1153,14 @@
       .hero { padding: 120px 6% 80px; }
       .hero-h1 { letter-spacing: -2px; }
       .hero-somos-text,
-      .hero-somos-dot { letter-spacing: -2px; }
-      .hero-somos { gap: 10px; }
-      .brand-inline-word { letter-spacing: -2px; }
+      .hero-somos-dot,
+      .brand-inline-word {
+        font-size: clamp(2rem, 10.5vw, 3rem);
+        letter-spacing: -1.5px;
+      }
+      .hero-somos { gap: 8px; flex-wrap: nowrap; }
+      .brand-inline { gap: 4px; }
+      .brand-inline-wave svg { width: 28px; height: 20px; }
       .scroll-hint { display: none; }
       .form-row { grid-template-columns: 1fr; }
       form { padding: 32px 24px; }
